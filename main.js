@@ -55,9 +55,10 @@ $(function() {
         $('#output').html('R: ' + pixelData[0] + '<br>G: ' + pixelData[1] + '<br>B: ' + pixelData[2] + '<br>A: ' + pixelData[3]);
 
         color = 'rgba('+pixelData[0]+','+pixelData[1]+','+pixelData[2]+','+pixelData[3]+')';
-        $('#colorDisplay').css('backgroundColor',color);
+        $('#ouput').css('backgroundColor',color);
     });
-console.log(img.width + '/n' + img.height);
+
+onsole.log(img.width  +"   "+ img.height);
 
 
 
