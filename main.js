@@ -43,12 +43,12 @@ $(function() {
 
     $('img').mousemove(function(e) {
 
-        // if(!this.canvas) {
-        //     this.canvas = $('<canvas />')[0];
-        //     this.canvas.width = this.width;
-        //     this.canvas.height = this.height;
-        //     this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
-        // }
+        if(!this.canvas) {
+            this.canvas = $('<canvas />')[0];
+            this.canvas.width = this.width;
+            this.canvas.height = this.height;
+            this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
+        }
 
         var pixelData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
 
