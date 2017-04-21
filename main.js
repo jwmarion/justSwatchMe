@@ -36,7 +36,7 @@ $(function() {
 
   var img = new Image;
   // This src needs the correct headers
-  img.src = "./pic.jpg";
+  img.src = "./pic2.jpg";
   // This makes it work
   img.crossOrigin = "anonymous";
   document.getElementById("my-image").src=img.src;
