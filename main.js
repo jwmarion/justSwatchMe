@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
 // // //
 // // // var img = document.getElementById('my-image');
 // // console.log('test');
@@ -93,8 +93,9 @@ $(document).ready(function() {
 
 
 var img = new Image();
-img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
-var canvas = document.getElementById('canvas');
+img.src = './pic.jpg';
+img.crossOrigin = 'anonymous';
+var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 img.onload = function() {
   ctx.drawImage(img, 0, 0);
