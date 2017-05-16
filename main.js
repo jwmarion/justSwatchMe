@@ -3,9 +3,11 @@ var img = new Image();
 img.src = './pic.jpg';
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
+
 img.onload = function() {
   ctx.drawImage(img, 0, 0);
   img.style.display = 'none';
+
 };
 
 var color = document.getElementById('colorDisplay');
@@ -13,6 +15,7 @@ var color2 = document.getElementById('colorDisplay2');
 var avg = [0,0,0,0];
 var pCount = 0;
 var data;
+
 function averageColor(){
   for(var x = 0; x < ctx.width; x++){
     for(var y = 0; y<ctx.height; y++){
@@ -26,8 +29,9 @@ function averageColor(){
     }
   }
   avg = [data[0]/pCount,data[1]/pCount,data[2]/pCount,data[3]/pCount];
-  color.style.background = 'rgba(' + avg[0] + ', ' + avg[1] +
+  color2.style.background = 'rgba(' + avg[0] + ', ' + avg[1] +
              ', ' + avg[2] + ', ' + (avg[3] / 255) + ')';
+  color2.textContent = 'average';
 }
 
 
