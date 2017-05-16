@@ -18,7 +18,7 @@ var data;
 
 function averageColor(){
   console.log('test');
-  console.log(ctx.naturalWidth + "  " + ctx.naturalHeight);
+  console.log(ctx);
   for(var x = 0; x < ctx.width; x++){
     console.log('test2');
     for(var y = 0; y<ctx.height; y++){
