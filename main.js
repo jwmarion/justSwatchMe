@@ -38,8 +38,10 @@ function averageColor(){
              ', ' + avg[2] + ', ' + (avg[3] / 255) + ')';
   color2.textContent = 'average';
   console.log(avg);
-  $('#colorDisplay2').css('backgroundColor','rgba(' + avg[0] + ', ' + avg[1] +
-             ', ' + avg[2] + ', ' + (avg[3] / 255) + ')');
+  $('#colorDisplay2').css('backgroundColor','rgba(' + Math.floor(avg[0]) + ', ' + Math.floor(avg[1]) +
+             ', ' + Math.floor(avg[2]) + ', ' + (Math.floor(avg[3]) / 255) + ')');
+     console.log('backgroundColor','rgba(' + Math.floor(avg[0]) + ', ' + Math.floor(avg[1]) +
+                ', ' + Math.floor(avg[2]) + ', ' + (Math.floor(avg[3]) / 255) + ')');
 }
 
 
