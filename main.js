@@ -47,6 +47,8 @@ function pick(event) {
              ', ' + data[2] + ', ' + (data[3] / 255) + ')';
   color.style.background =  rgba;
   color.textContent = rgba;
+
+  averageColor();
 }
 canvas.addEventListener('mousemove', pick);
 });
