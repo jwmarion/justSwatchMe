@@ -33,7 +33,7 @@ function averageColor(){
     }
   }
   console.log(pCount);
-  avg = [data[0]/pCount,data[1]/pCount,data[2]/pCount,data[3]/pCount];
+  avg = [avg[0]/pCount,avg[1]/pCount,avg[2]/pCount,avg[3]/pCount];
   color2.style.background = 'rgba(' + avg[0] + ', ' + avg[1] +
              ', ' + avg[2] + ', ' + (avg[3] / 255) + ')';
   color2.textContent = 'average';
