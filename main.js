@@ -21,6 +21,7 @@ function averageColor(){
   for(var x = 0; x < ctx.width; x++){
     for(var y = 0; y<ctx.height; y++){
       var pixel = ctx.getImageData(x, y, 1, 1);
+      console.log(pixel);
        data = pixel.data;
       avg[0]=avg[0]+data[0];
       avg[1]=avg[1]+data[1];
