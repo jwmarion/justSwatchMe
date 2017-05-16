@@ -1,6 +1,6 @@
 $(function() {
 var img = new Image();
-img.src = './pic.jpg';
+img.src = './pic2.jpg';
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 
