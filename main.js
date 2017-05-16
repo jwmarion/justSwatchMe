@@ -34,29 +34,31 @@ $(document).ready(function() {
 $(function() {
 
 
-  var img = new Image;
+  var img = new Image();
   // This src needs the correct headers
-  img.src = "./pic.jpg"
+  img.src = "./pic.jpg";
   // This makes it work
   img.crossOrigin = "anonymous";
   document.getElementById("my-image").src=img.src;
 
   var color = [0,0,0,0];
   var num = 0;
+  var pixelData;
   if(!this.canvas) {
       this.canvas = $('<canvas />')[0];
-}
-  this.canvas.width.forEach(w){
-    this.canvas.height.forEach(h){
-      var pixelData = this.canvas.getContext('2d').getImageData(w, h, 1, 1).data;
+    }
+
+  for(var w = 0; w<this.canvas.width; w++){
+    for(var h = 0; h<this.canvas.height; h++){
+      pixelData = this.canvas.getContext('2d').getImageData(w, h, 1, 1).data;
       color[0] += pixelData[0];
       color[1] += pixelData[1];
       color[2] += pixelData[2];
       color[3] += pixelData[3];
       num +=1;
     }
-
   }
+  
  $('#output').html('R: ' + color[0] + '<br>G: ' + color[1] + '<br>B: ' + color[2] + '<br>A: ' + pixelData[3]);
  var c = 'rgba('+pixelData[0]+','+pixelData[1]+','+pixelData[2]+','+pixelData[3]+')';
  $('#output').css('backgroundColor',c);
