@@ -2,6 +2,10 @@
   height: 100px;
   width: 100px;
 }
+#colorDisplay2{
+  height: 100px;
+  width: 100px;
+}
 #output{
   /*border: 2px solid red; */
   height: 5vw;
