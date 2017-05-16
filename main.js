@@ -17,6 +17,7 @@ var pCount = 0;
 var data;
 
 function averageColor(){
+  console.log('test');
   for(var x = 0; x < ctx.width; x++){
     for(var y = 0; y<ctx.height; y++){
       var pixel = ctx.getImageData(x, y, 1, 1);
@@ -49,3 +50,5 @@ function pick(event) {
 }
 canvas.addEventListener('mousemove', pick);
 });
+
+averageColor();
