@@ -94,14 +94,13 @@ $(function() {
 
 var img = new Image();
 img.src = './pic.jpg';
-img.crossOrigin = 'anonymous';
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 img.onload = function() {
   ctx.drawImage(img, 0, 0);
   img.style.display = 'none';
 };
-var color = document.getElementById('color');
+var color = document.getElementById('colorDisplay');
 function pick(event) {
   var x = event.layerX;
   var y = event.layerY;
