@@ -41,24 +41,44 @@ $(function() {
   img.crossOrigin = "anonymous";
   document.getElementById("my-image").src=img.src;
 
-    $('img').mousemove(function(e) {
+  let color = [0,0,0,0];
+  let num = 0;
+  if(!this.canvas) {
+      this.canvas = $('<canvas />')[0];
 
-        if(!this.canvas) {
-            this.canvas = $('<canvas />')[0];
-            this.canvas.width = this.width;
-            this.canvas.height = this.height;
-            this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
-        }
+  this.canvas.width.forEach(w){
+    this.canvas.height.forEach(h){
+      var pixelData = this.canvas.getContext('2d').getImageData(w, h, 1, 1).data;
+      color[0] += pixelData[0];
+      color[1] += pixelData[1];
+      color[2] += pixelData[2];
+      color[3] += pixelData[3];
+      num +=1;
+    }
 
-        var pixelData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
+  }
+ $('#output').html('R: ' + color[0] + '<br>G: ' + color[1] + '<br>B: ' + color[2] + '<br>A: ' + pixelData[3]);
+ let c = 'rgba('+pixelData[0]+','+pixelData[1]+','+pixelData[2]+','+pixelData[3]+')';
+ $('#output').css('backgroundColor',c);
+ 
+// $('img').mousemove(function(e) {
+    //
+    //     if(!this.canvas) {
+    //         this.canvas = $('<canvas />')[0];
+    //         this.canvas.width = this.width;
+    //         this.canvas.height = this.height;
+    //         this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
+    //     }
+    //
+    //     var pixelData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
+    //
+    //     $('#output').html('R: ' + pixelData[0] + '<br>G: ' + pixelData[1] + '<br>B: ' + pixelData[2] + '<br>A: ' + pixelData[3]);
+    //
+    //     color = 'rgba('+pixelData[0]+','+pixelData[1]+','+pixelData[2]+','+pixelData[3]+')';
+    //     $('#output').css('backgroundColor',color);
+    // });
 
-        $('#output').html('R: ' + pixelData[0] + '<br>G: ' + pixelData[1] + '<br>B: ' + pixelData[2] + '<br>A: ' + pixelData[3]);
-
-        color = 'rgba('+pixelData[0]+','+pixelData[1]+','+pixelData[2]+','+pixelData[3]+')';
-        $('#output').css('backgroundColor',color);
-    });
-
-console.log(img.width  +"   "+ img.height);
+// console.log(img.width  +"   "+ img.height);
 
 
 
