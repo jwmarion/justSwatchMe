@@ -45,7 +45,7 @@ $(function() {
   let num = 0;
   if(!this.canvas) {
       this.canvas = $('<canvas />')[0];
-
+}
   this.canvas.width.forEach(w){
     this.canvas.height.forEach(h){
       var pixelData = this.canvas.getContext('2d').getImageData(w, h, 1, 1).data;
@@ -60,7 +60,7 @@ $(function() {
  $('#output').html('R: ' + color[0] + '<br>G: ' + color[1] + '<br>B: ' + color[2] + '<br>A: ' + pixelData[3]);
  let c = 'rgba('+pixelData[0]+','+pixelData[1]+','+pixelData[2]+','+pixelData[3]+')';
  $('#output').css('backgroundColor',c);
- 
+
 // $('img').mousemove(function(e) {
     //
     //     if(!this.canvas) {
