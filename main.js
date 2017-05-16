@@ -37,6 +37,9 @@ function averageColor(){
   color2.style.background = 'rgba(' + avg[0] + ', ' + avg[1] +
              ', ' + avg[2] + ', ' + (avg[3] / 255) + ')';
   color2.textContent = 'average';
+  console.log(avg);
+  $('#colorDisplay2').css('backgroundColor','rgba(' + avg[0] + ', ' + avg[1] +
+             ', ' + avg[2] + ', ' + (avg[3] / 255) + ')');
 }
 
 
