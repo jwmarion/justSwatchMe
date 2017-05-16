@@ -41,8 +41,8 @@ $(function() {
   img.crossOrigin = "anonymous";
   document.getElementById("my-image").src=img.src;
 
-  let color = [0,0,0,0];
-  let num = 0;
+  var color = [0,0,0,0];
+  var num = 0;
   if(!this.canvas) {
       this.canvas = $('<canvas />')[0];
 }
@@ -58,7 +58,7 @@ $(function() {
 
   }
  $('#output').html('R: ' + color[0] + '<br>G: ' + color[1] + '<br>B: ' + color[2] + '<br>A: ' + pixelData[3]);
- let c = 'rgba('+pixelData[0]+','+pixelData[1]+','+pixelData[2]+','+pixelData[3]+')';
+ var c = 'rgba('+pixelData[0]+','+pixelData[1]+','+pixelData[2]+','+pixelData[3]+')';
  $('#output').css('backgroundColor',c);
 
 // $('img').mousemove(function(e) {
