@@ -48,7 +48,7 @@ $(function() {
       this.canvas = $('<canvas />')[0];
     }
 
-  console.log(this.canvas.getContext('2d').getImageData(w, h, 1, 1).data);
+  console.log(this.canvas.getContext('2d').getImageData(0, 0, 1, 1).data);
   //
   // for(var w = 0; w<this.canvas.width; w++){
   //   for(var h = 0; h<this.canvas.height; h++){
