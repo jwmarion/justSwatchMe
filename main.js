@@ -7,7 +7,7 @@ var ctx = canvas.getContext('2d');
 img.onload = function() {
   ctx.drawImage(img, 0, 0);
   img.style.display = 'none';
-  averageColor();
+  // averageColor();
 };
 
 var color = document.getElementById('colorDisplay');
@@ -58,4 +58,29 @@ function pick(event) {
   color.textContent = rgba;
 }
 canvas.addEventListener('mousemove', pick);
+
+
+$('.buttons').on('click','#b1',function(){
+  img.src = './pic.jpg';
+  ctx.drawImage(img, 0, 0);
+  img.style.display = 'none';
+});
+$('.buttons').on('click','#b2',function(){
+  img.src = './pic2.png';
+  ctx.drawImage(img, 0, 0);
+  img.style.display = 'none';
+});
+$('.buttons').on('click','#b3',function(){
+  img.src = './3.jpg';
+  ctx.drawImage(img, 0, 0);
+  img.style.display = 'none';
+});
+$('.buttons').on('click','#b4',function(){
+  img.src = './4.jpg';
+  ctx.drawImage(img, 0, 0);
+  img.style.display = 'none';
+});
+$('.buttons').on('click','#b5',function(){
+  averageColor();
+});
 });

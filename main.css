@@ -1,6 +1,7 @@
 #colorDisplay{
   height: 100px;
   width: 100px;
+  background-size: contain;
 }
 #colorDisplay2{
   height: 100px;
