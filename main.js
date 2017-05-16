@@ -49,18 +49,18 @@ $(function() {
     }
 
   console.log(this.canvas.getContext('2d').getImageData(0, 0, 1, 1).data);
-  //
-  // for(var w = 0; w<this.canvas.width; w++){
-  //   for(var h = 0; h<this.canvas.height; h++){
-  //     pixelData = this.canvas.getContext('2d').getImageData(w, h, 1, 1).data;
-  //     color[0] += pixelData[0];
-  //     color[1] += pixelData[1];
-  //     color[2] += pixelData[2];
-  //     color[3] += pixelData[3];
-  //     num +=1;
-  //   }
-  // }
 
+  for(var w = 0; w<this.canvas.width; w++){
+    for(var h = 0; h<this.canvas.height; h++){
+      pixelData = this.canvas.getContext('2d').getImageData(w, h, 1, 1).data;
+      color[0] += pixelData[0];
+      color[1] += pixelData[1];
+      color[2] += pixelData[2];
+      color[3] += pixelData[3];
+      num +=1;
+    }
+  }
+console.log(color);
  $('#output').html('R: ' + color[0] + '<br>G: ' + color[1] + '<br>B: ' + color[2] + '<br>A: ' + pixelData[3]);
  var c = 'rgba('+pixelData[0]/num+','+pixelData[1]/num+','+pixelData[2]/num+','+pixelData[3]/num+')';
  $('#output').css('backgroundColor',c);
