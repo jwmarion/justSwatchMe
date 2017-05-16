@@ -19,12 +19,11 @@ var data;
 function averageColor(){
   console.log('test');
   console.log(ctx);
-  for(var x = 0; x < ctx.canvas.width; x++){
+  for(var x = 0; x < ctx.canvas.width-10; x+=10){
     console.log('test2');
-    for(var y = 0; y<ctx.canvas.height; y++){
+    for(var y = 0; y<ctx.canvas.height-10; y+=10){
       var pixel = ctx.getImageData(x, y, 1, 1);
-      console.log(ctx);
-      console.log(pixel);
+      console.log(x + "  " + y);
        data = pixel.data;
       avg[0]=avg[0]+data[0];
       avg[1]=avg[1]+data[1];
@@ -33,7 +32,7 @@ function averageColor(){
       pCount +=1;
     }
   }
-  console.log(pcount);
+  console.log(pCount);
   avg = [data[0]/pCount,data[1]/pCount,data[2]/pCount,data[3]/pCount];
   color2.style.background = 'rgba(' + avg[0] + ', ' + avg[1] +
              ', ' + avg[2] + ', ' + (avg[3] / 255) + ')';
