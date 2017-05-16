@@ -17,10 +17,9 @@ var pCount = 0;
 var data;
 
 function averageColor(){
-  console.log('test');
-  console.log(ctx);
+  var avg = [0,0,0,0];
+  var pCount = 0;
   for(var x = 0; x < ctx.canvas.width-10; x+=10){
-    console.log('test2');
     for(var y = 0; y<ctx.canvas.height-10; y+=10){
       var pixel = ctx.getImageData(x, y, 1, 1);
       console.log(x + "  " + y);
