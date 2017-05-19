@@ -16,7 +16,6 @@ class Swatch extends React.Component{
       let img = new Image();
       let canvas = ReactDOM.findDOMNode(this.refs.myCanvas);
       let ctx = canvas.getContext('2d');
-      console.log(img);
       img.src = this.state.currentPic;
       ctx.drawImage(img, 0, 0);
       img.onload = function() {
@@ -24,6 +23,7 @@ class Swatch extends React.Component{
         img.style.display = 'none';
         // averageColor();
       };
+      console.log(rgbToHsl(120,255,6));
 
     }
     // componentOnChange() {
@@ -57,13 +57,19 @@ class Swatch extends React.Component{
 
         <pre id="output"></pre>
         <div style={{backgroundColor: this.state.avgColor} }id="colorDisplay"></div>
-        <div id="colorDisplay2">Average Color</div>
+        <div className="cd" id="colorDisplay2">Average Color</div>
+        <div className="cd" id="colorDisplay3">Complementary Color</div>
+        <div className="cd" id="colorDisplay4">split complementary 1</div>
+        <div className="cd" id="colorDisplay5">split complementary 2</div>
+        <div className="cd" id="colorDisplay6">Analogous 1</div>
+        <div className="cd" id="colorDisplay7">Analogous 2</div>
       </div>
     )
   }
   picSelect(value){
 
   }
+
 
   averageColor(){
     let img = new Image();
@@ -88,10 +94,56 @@ class Swatch extends React.Component{
     console.log(pCount);
     avg = [avg[0]/pCount,avg[1]/pCount,avg[2]/pCount,avg[3]/pCount];
     color2.style.background = 'rgba(' + avg[0] + ', ' + avg[1] + ', ' + avg[2] + ', ' + (avg[3] / 255) + ')';
-    console.log(avg);
     $('#colorDisplay2').css('backgroundColor','rgba(' + Math.floor(avg[0]) + ', ' + Math.floor(avg[1]) + ', ' + Math.floor(avg[2]) + ', ' + (Math.floor(avg[3]) / 255) + ')');
-    console.log('backgroundColor','rgba(' + Math.floor(avg[0]) + ', ' + Math.floor(avg[1]) + ', ' + Math.floor(avg[2]) + ', ' + (Math.floor(avg[3]) / 255) + ')');
+    console.log(avg);
+    var comp = rgbToHsl(Math.floor(avg[0]),+ Math.floor(avg[1]),Math.floor(avg[2]));
+    console.log(comp);
+
+    $('#colorDisplay3').css('backgroundColor','hsl('+((comp[0]*360)+180)+','+comp[1]*100+'%,'+comp[2]*100+'%)');
+
+    $('#colorDisplay4').css('backgroundColor','hsl('+((comp[0]*360)+120)+','+comp[1]*100+'%,'+comp[2]*100+'%)');
+    $('#colorDisplay5').css('backgroundColor','hsl('+((comp[0]*360)-120)+','+comp[1]*100+'%,'+comp[2]*100+'%)');
+    $('#colorDisplay6').css('backgroundColor','hsl('+((comp[0]*360)+30)+','+comp[1]*100+'%,'+comp[2]*100+'%)');
+    $('#colorDisplay7').css('backgroundColor','hsl('+((comp[0]*360)-30)+','+comp[1]*100+'%,'+comp[2]*100+'%)');
   }
+
+
+}
+/**
+* Converts an RGB color value to HSL. Conversion formula
+* adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+* Assumes r, g, and b are contained in the set [0, 255] and
+* returns h, s, and l in the set [0, 1].
+*from https://gist.github.com/mjackson/5311256
+*
+* @param   Number  r       The red color value
+* @param   Number  g       The green color value
+* @param   Number  b       The blue color value
+* @return  Array           The HSL representation
+*/
+
+function rgbToHsl(r, g, b) {
+r /= 255, g /= 255, b /= 255;
+
+var max = Math.max(r, g, b), min = Math.min(r, g, b);
+var h, s, l = (max + min) / 2;
+
+if (max == min) {
+  h = s = 0; // achromatic
+} else {
+  var d = max - min;
+  s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+  switch (max) {
+    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+    case g: h = (b - r) / d + 2; break;
+    case b: h = (r - g) / d + 4; break;
+  }
+
+  h /= 6;
+}
+
+return [ h, s, l ];
 }
 ReactDOM.render(<Swatch/>,  document.getElementById('root')
 );

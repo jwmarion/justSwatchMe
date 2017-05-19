@@ -1,8 +1,8 @@
 #colorDisplay{
   height: 100px;
   width: 100px;
-  background-size:cover;
-  background-size: cover;
+  background-size:contain;
+  background-size: contain;
 }
 #colorDisplay2{
   height: 100px;
@@ -11,4 +11,22 @@
 #output{
   /*border: 2px solid red; */
   height: 5vw;
+}
+
+#colorDisplay3{
+  height: 100px;
+  width: 100px;
+}
+
+#colorDisplay4{
+  height: 100px;
+  width: 100px;
+}
+#colorDisplay5{
+  height: 100px;
+  width: 100px;
+}
+#colorDisplay6{
+  height: 100px;
+  width: 100px;
 }

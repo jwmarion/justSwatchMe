@@ -60,3 +60,4 @@ $('.buttons').on('click','#b1',function(){
   ctx.drawImage(img, 0, 0);
   img.style.display = 'none';
 });
+});
