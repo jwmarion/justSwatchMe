@@ -4,39 +4,34 @@
   background-size:contain;
   background-size: contain;
 }
-/*#colorDisplay2{
-  height: 100px;
-  width: 100px;
-}*/
+
 #output{
   /*border: 2px solid red; */
   height: 5vw;
 }
-/*
-#colorDisplay3{
-  height: 100px;
-  width: 100px;
-}
-
-#colorDisplay4{
-  height: 100px;
-  width: 100px;
-}
-#colorDisplay5{
-  height: 100px;
-  width: 100px;
-}
-#colorDisplay6{
-  height: 100px;
-  width: 100px;
-}
-#colorDisplay7{
-  height: 100px;
-  width: 100px;
-}*/
 
 .cd{
   height: 100px;
   width: 100px;
   float: left;
+}
+span{
+  -webkit-text-stroke: 1px black;
+}
+.topBar{
+  background-color:rgb(164, 164, 164);
+}
+
+.myCanvas{
+  float: left
+}
+
+.colors div:nth-of-type(6n+7){
+  clear: left;
+}
+.colors{
+  float: left;
+}
+.colors div{
+  border: 1px solid black;
 }
