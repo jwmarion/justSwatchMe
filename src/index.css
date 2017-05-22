@@ -1,5 +1,9 @@
+body{
+  background-color: rgb(48,48,48);
+
+}
 #colorDisplay{
-  height: 100px;
+  height: 1px;
   width: 100px;
   background-size:contain;
   background-size: contain;
@@ -11,8 +15,8 @@
 }
 
 .cd{
-  height: 100px;
-  width: 100px;
+  height: 125px;
+  width: 125px;
   float: left;
 }
 span{
@@ -33,5 +37,12 @@ span{
   float: left;
 }
 .colors div{
+  border: 1px solid black;
+  word-wrap: break-word
+}
+.hoverColor{
+  height: 16px;
+  width: 16px;
+  float: left;
   border: 1px solid black;
 }

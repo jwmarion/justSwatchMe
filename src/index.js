@@ -7,6 +7,7 @@ class Swatch extends React.Component{
   constructor(){
     super();
     this.state = {
+      hoverColor: [37, 100, 50],
       currentPic: './wheel.jpeg',
       activeColor: [37, 100, 50],
       genColor: [[37, 100, 50],[55,100,50],[123,100,50],[215,100,50],[275,100,50]]
@@ -65,10 +66,9 @@ class Swatch extends React.Component{
 
 
         <div className="buttons">
-          <button id="b1" type="button" name="button" onClick={()=>this.changePic(1)}>Image 1</button>
-          <button id="b2" type="button" name="button" onClick={()=>this.changePic(2)}>Image 2</button>
-          <button id="b3" type="button" name="button" onClick={()=>this.changePic(3)}>Image 3</button>
-          <button id="b4" type="button" name="button" onClick={()=>this.changePic(4)}>Image 4</button>
+          <div className="hoverColor"  style={{
+            backgroundColor: this.toStringHsl(this.state.hoverColor)}}></div>
+          <button id="b1" type="button" name="button" onClick={()=>this.setState({img: './wheel.jpeg'})}>Color Wheel</button>
           <button id="b5" type="button" name="button" onClick={()=>this.averageColor()} >Get Average Color</button>
 
         <input type="file" id="imageLoader" name="imageLoader" onChange={(event)=>
@@ -76,29 +76,46 @@ class Swatch extends React.Component{
           onClick={(event)=> { event.target.value = null
           }}/>
             </div>
-        <canvas ref="myCanvas" className="myCanvas"width="400" height="300" onClick={(event)=>this.pick(event)}></canvas>
+        <canvas ref="myCanvas" className="myCanvas"width="400" height="300" onMouseMove={(event)=>this.hoverColor(event)} onClick={(event)=>this.pick(event)}></canvas>
         <img id="my-image" src="" alt=""/>
 
         <div className="colors">
-          <div className="cd" id="colorDisplay2" style={{backgroundColor: this.toStringHsl(this.state.activeColor)}}>Average Color</div>
-          <div className="cd" id="colorDisplay3" style={{backgroundColor: this.toStringHsl(this.state.genColor[0])}}>Complementary Color</div>
-          <div className="cd" id="colorDisplay4" style={{backgroundColor: this.toStringHsl(this.state.genColor[1])}}>split complementary 1</div>
-          <div className="cd" id="colorDisplay5" style={{backgroundColor: this.toStringHsl(this.state.genColor[2])}}>split complementary 2</div>
-          <div className="cd" id="colorDisplay6" style={{backgroundColor: this.toStringHsl(this.state.genColor[3])}}>Analogous 1</div>
-          <div className="cd" id="colorDisplay7" style={{backgroundColor: this.toStringHsl(this.state.genColor[4])}}>Analogous 2</div>
+          <div className="cd" id="colorDisplay2" style={{
+            backgroundColor: this.toStringHsl(this.state.activeColor)}}>
+            Active Color <br/>
+            {this.toStringRgb(this.state.activeColor)}<br/>
+            {this.toStringHsl(this.state.activeColor)}</div>
 
-          <div className="cd" id="colorDisplay8" style={{backgroundColor: this.toStringHsl(this.state.activeColor)}}>Average Color</div>
-          <div className="cd" id="colorDisplay9" style={{backgroundColor: this.toStringHsl(this.state.genColor[0])}}>Complementary Color</div>
-          <div className="cd" id="colorDisplay10" style={{backgroundColor: this.toStringHsl(this.state.genColor[1])}}>split complementary 1</div>
-          <div className="cd" id="colorDisplay11" style={{backgroundColor: this.toStringHsl(this.state.genColor[2])}}>split complementary 2</div>
-          <div className="cd" id="colorDisplay12" style={{backgroundColor: this.toStringHsl(this.state.genColor[3])}}>Analogous 1</div>
-          <div className="cd" id="colorDisplay13" style={{backgroundColor: this.toStringHsl(this.state.genColor[4])}}>Analogous 2</div>
-          <div className="cd" id="colorDisplay14" style={{backgroundColor: this.toStringHsl(this.state.activeColor)}}>Average Color</div>
-          <div className="cd" id="colorDisplay15" style={{backgroundColor: this.toStringHsl(this.state.genColor[0])}}>Complementary Color</div>
-          <div className="cd" id="colorDisplay16" style={{backgroundColor: this.toStringHsl(this.state.genColor[1])}}>split complementary 1</div>
-          <div className="cd" id="colorDisplay17" style={{backgroundColor: this.toStringHsl(this.state.genColor[2])}}>split complementary 2</div>
-          <div className="cd" id="colorDisplay18" style={{backgroundColor: this.toStringHsl(this.state.genColor[3])}}>Analogous 1</div>
-          <div className="cd" id="colorDisplay19" style={{backgroundColor: this.toStringHsl(this.state.genColor[4])}}>Analogous 2</div>
+          <div className="cd" id="colorDisplay3" style={{
+            backgroundColor: this.toStringHsl(this.state.genColor[0])}}>
+            Complementary Color<br/>
+            {this.toStringRgb(this.state.genColor[0])}<br/>
+            {this.toStringHsl(this.state.genColor[0])}</div>
+
+          <div className="cd" id="colorDisplay4" style={{
+            backgroundColor: this.toStringHsl(this.state.genColor[1])}}>
+            split complementary 1<br/>
+            {this.toStringRgb(this.state.genColor[1])}<br/>
+            {this.toStringHsl(this.state.genColor[1])}</div>
+
+          <div className="cd" id="colorDisplay5" style={{
+            backgroundColor: this.toStringHsl(this.state.genColor[2])}}>
+            split complementary 2<br/>
+            {this.toStringRgb(this.state.genColor[2])}<br/>
+            {this.toStringHsl(this.state.genColor[2])}</div>
+
+          <div className="cd" id="colorDisplay6" style={{
+            backgroundColor: this.toStringHsl(this.state.genColor[3])}}>
+            Analogous 1<br/>
+            {this.toStringRgb(this.state.genColor[3])}<br/>
+            {this.toStringHsl(this.state.genColor[3])}</div>
+
+          <div className="cd" id="colorDisplay7" style={{
+            backgroundColor: this.toStringHsl(this.state.genColor[4])}}>
+            Analogous 2<br/>
+            {this.toStringRgb(this.state.genColor[3])}<br/>
+            {this.toStringHsl(this.state.genColor[3])}</div>
+
         </div>
       </div>
     )
@@ -160,6 +177,23 @@ class Swatch extends React.Component{
     // this.state.activeColor.textContent = rgba;
   }
 
+  hoverColor(event){
+   let canvas = ReactDOM.findDOMNode(this.refs.myCanvas);
+   let ctx = canvas.getContext('2d');
+    var x = event.nativeEvent.layerX;
+    var y = event.nativeEvent.layerY;
+    var pixel = ctx.getImageData(x, y, 1, 1);
+    var data = pixel.data;
+    var rgba = 'rgba(' + data[0] + ', ' + data[1] +
+               ', ' + data[2] + ', ' + (data[3] / 255) + ')';
+
+    var hsl = rgbToHsl(data[0],data[1],data[2]);
+    console.log(rgba);
+    console.log(hsl);
+    this.setState({
+      hoverColor:[hsl[0] * 360, hsl[1]*100, hsl[2]*100]
+    })
+  }
   averageColor(){
     let img = new Image();
     let canvas = ReactDOM.findDOMNode(this.refs.myCanvas);
@@ -192,9 +226,16 @@ class Swatch extends React.Component{
 
   toStringHsl(color){
     // console.log('hsl('+color[0]+','+color[1]+'%,'+color[2]+'%)');
-    return ('hsl('+color[0]+','+color[1]+'%,'+color[2]+'%)');
+    return ('hsl('+Math.floor(color[0])+','+Math.floor(color[1])+'%,'+Math.floor(color[2])+'%)');
 
   }
+  toStringRgb(color){
+    // console.log('hsl('+color[0]+','+color[1]+'%,'+color[2]+'%)');
+   let rgb = hslToRgb(color[0]/360,color[1]/100,color[2]/100);
+    return ('rgb:('+Math.floor(rgb[0])+','+Math.floor(rgb[1])+','+Math.floor(rgb[2])+')');
+
+  }
+  
   generateColors(){
     let comp = this.state.activeColor
     this.setState({
@@ -208,6 +249,15 @@ class Swatch extends React.Component{
   }
 
 
+}
+function decimalToHexString(number)
+{
+    if (number < 0)
+    {
+        number = 0xFFFFFFFF + number + 1;
+    }
+
+    return number.toString(16).toUpperCase();
 }
 /**
 * Converts an RGB color value to HSL. Conversion formula
@@ -244,6 +294,42 @@ function rgbToHsl(r, g, b) {
   }
 
   return [ h, s, l ];
+}
+/**
+ * Converts an HSL color value to RGB. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes h, s, and l are contained in the set [0, 1] and
+ * returns r, g, and b in the set [0, 255].
+ *
+ * @param   Number  h       The hue
+ * @param   Number  s       The saturation
+ * @param   Number  l       The lightness
+ * @return  Array           The RGB representation
+ */
+function hslToRgb(h, s, l) {
+  var r, g, b;
+
+  if (s == 0) {
+    r = g = b = l; // achromatic
+  } else {
+    function hue2rgb(p, q, t) {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1/6) return p + (q - p) * 6 * t;
+      if (t < 1/2) return q;
+      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+      return p;
+    }
+
+    var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    var p = 2 * l - q;
+
+    r = hue2rgb(p, q, h + 1/3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1/3);
+  }
+
+  return [ r * 255, g * 255, b * 255 ];
 }
 ReactDOM.render(<Swatch/>,  document.getElementById('root')
 );
