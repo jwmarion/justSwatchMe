@@ -42,7 +42,7 @@ function averageColor(){
 
 function pick(event) {
   var x = event.layerX;
-  var y = event.layerY;
+  var y = event.layerY;ear
   var pixel = ctx.getImageData(x, y, 1, 1);
   var data = pixel.data;
   var rgba = 'rgba(' + data[0] + ', ' + data[1] +
