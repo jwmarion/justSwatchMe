@@ -1,0 +1,92 @@
+
+
+body{
+  background-color: rgb(48,48,48);
+
+}
+#colorDisplay{
+  height: 1px;
+  width: 100px;
+  background-size:contain;
+  background-size: contain;
+}
+
+#output{
+  /*border: 2px solid red; */
+  height: 5vw;
+}
+
+.cd{
+  height: 125px;
+  width: 125px;
+  float: left;
+  border: 1px solid black;
+  word-wrap: break-word;
+  text-shadow:2px white;
+}
+span{
+  -webkit-text-stroke: 1px black;
+}
+.topBar{
+  background-color:rgb(164, 164, 164);
+}
+
+.myCanvas{
+  float: left
+}
+
+.colors div:nth-of-type(6n+7){
+  clear: left;
+}
+.userSwatch div:nth-of-type(6n+7){
+  clear: left;
+}
+.colors{
+  float: left;
+}
+.colors div{
+
+}
+.hoverColor{
+  height: 16px;
+  width: 16px;
+  float: left;
+  border: 1px solid black;
+}
+#my-image{
+  background-color: yellow;
+}
+
+Slider{
+  height: 10px;
+  width: 50px;
+}
+.slideMgmt{
+  float: left;
+  clear: left;
+}
+.swatchArea{
+  float: left;
+  clear: left;
+}
+.leftSide{
+  float: left;
+  height: 100vh;
+}
+.rightSide{
+  float: left;
+}
+.sliders input{
+  float: left;
+  clear: left;
+}
+.topRight{
+  float: right;
+  width: 20%;
+}
+.topRight input{
+  float: right;
+}
+.topLeft{
+  width: 20%;
+}

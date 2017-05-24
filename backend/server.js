@@ -9,61 +9,31 @@ const uuid = require('uuid');
 const cors = require('cors');
 
 const db = pgp({
-  database: 'ecom'
+  database: 'swatchme'
 });
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/api/products', (req, resp, next) => {
-  db.any('select * from product')
+app.get('/api/swatches', (req, resp, next) => {
+  db.any('select * from swatch')
     .then(data => resp.json(data))
     .catch(next);
 });
 
-app.get('/api/product/:id', (req, resp, next) => {
-  let id = req.params.id;
-  db.oneOrNone('select * from product where id = $1', id)
-    .then(data => {
-      if (data) {
-        resp.json(data);
-      } else {
-        resp.status(404);
-        resp.json({
-          message: "Product not found."
-        });
-      }
-    })
-    .catch(next);
-});
-
-
-/*
-Request body shape:
-{
-  username: "lolcat",
-  password: "forthelolz",
-  email: "lol@cat.com",
-  first_name: "lol",
-  last_name: "cat"
-}
-*/
 app.post('/api/user/signup', (req, resp, next) => {
   let data = req.body;
   bcrypt.hash(data.password, 10)
     .then((encryptedPassword) =>
       db.one(`
-        insert into customer
-        values (default, $1, $2, $3, $4, $5)
-        returning username, email, first_name, last_name
+        insert into User
+        values (default, $1, $2)
+        returning username
         `,
         [
           data.username,
-          data.email,
-          encryptedPassword,
-          data.first_name,
-          data.last_name
+          encryptedPassword
         ]
       )
     )
@@ -76,14 +46,13 @@ app.post('/api/user/login', (req, resp, next) => {
   let username = req.body.username;
   let password = req.body.password;
   db.one(
-    'select * from customer where username = $1',
+    'select * from User where username = $1',
     username)
     .then(customer =>
       [customer,
         bcrypt.compare(password, customer.password)])
     .spread((customer, matches) => {
       if (matches) {
-        let token = uuid.v4();
         return [
           customer,
           db.one(
@@ -108,10 +77,11 @@ app.post('/api/user/login', (req, resp, next) => {
     });
 });
 
-app.post('/api/user/shopping_cart', (req, resp, next) => {
+app.post('/api/user/postswatch', (req, resp, next) => {
   db.none(
-    `insert into product_in_shopping_cart values(default ,$1,$2)`,[
-    req.body.product, req.body.user])
+    `insert into swatch values(default,$1,$2,$3,$4,default)`,[
+    req.body.user, req.body.h,req.body.s,req.body.l])
+    .then(resp.json('complete'));
 });
 
 // app.get('/api/user/cart_contents'),(req,resp,next) =>{
@@ -120,4 +90,4 @@ app.post('/api/user/shopping_cart', (req, resp, next) => {
 //   }
 // }
 
-app.listen(4000, () => console.log('Listening on 4000.'));
+app.listen(3003, () => console.log('Listening on 3003.'));

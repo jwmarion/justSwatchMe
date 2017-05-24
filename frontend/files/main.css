@@ -1,0 +1,18 @@
+#colorDisplay{
+  height: 100px;
+  width: 100px;
+  background-size:cover;
+  background-size: cover;
+}
+#colorDisplay2{
+  height: 100px;
+  width: 100px;
+}
+#colorDisplay3{
+  height: 100px;
+  width: 100px;
+}
+#output{
+  /*border: 2px solid red; */
+  height: 5vw;
+}
