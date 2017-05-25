@@ -1,11 +1,32 @@
 import React,{Component} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import $ from 'jquery';
+// import Sidebar from 'react-sidebar';
+
+
+// const styles = {
+//   contentHeaderMenuLink: {
+//     textDecoration: 'none',
+//     color: 'white',
+//     padding: 8,
+//   },
+//   content: {
+//     padding: '16px'
+//   },
+//   sidebar:{
+//     width: '300px',
+//     backgroundColor: 'white'
+//   }
+// };
 
 class Swatch extends React.Component{
   constructor(){
+
     super();
     this.state = {
+      open: false,
+      userInfo: null,
       colorType: 'hsl',
       selected:[[0,0,100]],
       uSwatch: [[0,0,100]],
@@ -15,15 +36,23 @@ class Swatch extends React.Component{
       sliderValue: [2,92,57],
       genColor: [[37, 100, 50],[55,100,50],[123,100,50],[215,100,50],[275,100,50]],
       value: 10,
-      userInfo: null
+      pLog: null,
+      uLog: null
 
     };
+    // this.onSetOpen = this.onSetOpen.bind(this);
   }
+
+    onSetOpen(open) {
+      this.setState({open: open});
+    }
+
     componentDidUpdate(prevProps, prevState){
       if (prevState.activeColor !== this.state.activeColor ){
         this.generateColors();
       }
     }
+
     componentDidMount() {
       let rangeValue=[this.state.activeColor];
       let img = new Image();
@@ -40,29 +69,75 @@ class Swatch extends React.Component{
         ctx.drawImage(img, (canvas.width / 2) - (img.width / 2), 0, img.width, canvas.height);
       };
     }
-
+    // renderPropNumber(prop) {
+    //   const setMethod = (ev) => {
+    //     const newState = {};
+    //     newState[prop] = parseInt(ev.target.value, 10);
+    //     this.setState(newState);
+    //   };
+    //
+    //   return (
+    //     <p key={prop}>
+    //        {prop} <input type="number" onChange={setMethod} value={this.state[prop]} />
+    //     </p>);
+    // }
   render() {
-    const { value } = this.state
+    // const sidebar = <b>Sidebar content</b>;
+    //
+    // const sidebarProps = {
+    //   sidebar: sidebar,
+    //   docked: this.state.docked,
+    //   sidebarClassName: 'custom-sidebar-class',
+    //   open: this.state.open,
+    //   touch: this.state.touch,
+    //   shadow: this.state.shadow,
+    //   pullRight: this.state.pullRight,
+    //   touchHandleWidth: this.state.touchHandleWidth,
+    //   dragToggleDistance: this.state.dragToggleDistance,
+    //   transitions: this.state.transitions,
+    //   onSetOpen: this.onSetOpen,
+    //   styles: styles
+    // };
+
     let topRight;
     if (this.state.userInfo !== null){
       topRight = (
       <div className='topRight'>
       <h3>{'Welcome ' + this.state.userInfo.username}</h3>
-       <button onClick={()=>this.props.logOut({user: this.state.uLog, pass: this.state.uPass})}>Log out!</button>
+       <button onClick={()=>(this.setState({userInfo: null}))}>Log out!</button>
       </div>)
-  }else{
+    }else{
       topRight = (
         <div className="topRight">
-        <input onChange={(event)=>this.props.write(event.target.value,'uLog')}className="userLogin" type='text'/>
-        <input onChange={(event)=>this.props.write(event.target.value,'pLog')} className="passLogin" type='text'/>
+        <input onChange={(event)=>this.write(event.target.value,'uLog')}className="userLogin" type='text'/>
+        <input onChange={(event)=>this.write(event.target.value,'pLog')} className="passLogin" type='password'/>
        <button>Sign Up!</button>
-         <button onClick={()=>this.props.logIn({user: this.props.uLog, pass: this.props.uPass})}>Log in!</button>
+         <button onClick={()=>this.logIn({username: this.state.uLog, password: this.state.pLog})}>Log in!</button>
          </div>
 
      )
     }
+
+    let sidebar;
+    if(this.state.open){
+      sidebar=(
+        <div className="sidebar">
+        <h2>Your Swatches</h2>
+        <button onClick={()=>this.setState({open: false})}>X</button>
+          {this.state.genColor.map((val,i)=>
+            <div className="sideColor" style={{backgroundColor: this.toStringHsl(val)}} key={i}>
+
+            </div>
+          )}
+          <button>Set Swatch</button><button>Delete</button>
+          </div>
+      )
+    }
+
     return (
       <div>
+      {sidebar}
+
       <div className="topBar">
         <div className="topLeft">
           <h1>
@@ -75,6 +150,7 @@ class Swatch extends React.Component{
             <span style={{color:this.toStringHsl(this.state.genColor[4])}}>H</span>
             .me
           </h1>
+          <button onClick={()=>(this.setState({open: true}))}>Swatches</button>
         </div>
         {topRight}
       </div>
@@ -191,6 +267,7 @@ class Swatch extends React.Component{
       </div>
     )
   }
+
   changePic(value){
     let val = '';
     if(value ==1){
@@ -293,6 +370,76 @@ class Swatch extends React.Component{
       selected: this.state.genColor[value]
     })}
   };
+
+
+  logIn(data){
+    console.log(data);
+    let url = 'http://localhost:3003/api/user/login';
+    $.ajax({
+        type: 'POST',
+        url: url,
+       contentType: "application/json",
+        dataType: 'json',
+        data: JSON.stringify({
+          username: data.username,
+          password: data.password,
+        }),
+        cache: false,
+        success: function(data) {
+          this.setState({userInfo: data});
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+    }
+
+
+
+
+  uploadSwatch(){
+    let url = 'http://localhost:3003/api/user/postswatch';
+    $.ajax({
+        type: 'POST',
+        url: url,
+       contentType: "application/json",
+        dataType: 'json',
+        data: JSON.stringify({
+          user: this.state.userInfo.username,
+          swatch: JSON.stringify({
+            color1: this.state.activeColor,
+            color2: this.state.genColor[0],
+            color3: this.state.genColor[1],
+            color4: this.state.genColor[2],
+            color5: this.state.genColor[3],
+            color26: this.state.genColor[4],
+          })
+        }),
+        cache: false,
+        success: function(data) {
+          this.setState({userInfo: data});
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+    }
+
+
+
+
+  write(value, type){
+    if (type === 'pLog'){
+      this.setState({
+        pLog: value
+      });
+    }
+    else if (type === 'uLog'){
+      this.setState({
+        uLog: value
+      });
+    }
+  }
 
   select(value){
     let temp = this.state.uSwatch;

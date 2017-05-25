@@ -90,3 +90,17 @@ Slider{
 .topLeft{
   width: 20%;
 }
+.sidebar{
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  background-color: white;
+  width: 200px;
+  height: 100%;
+}
+.sideColor{
+  float: left;
+  width: 30px;
+  height: 30px;
+  border: 1px solid black;
+}
