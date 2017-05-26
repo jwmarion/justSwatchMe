@@ -253,7 +253,7 @@ class Swatch extends React.Component{
 
             <div className="userSwatch">
               {this.state.uSwatch.map((val,i)=>
-                 <div className="cd" onClick={()=>this.select(i,'u')} style={{
+                 <div className="cd" onClick={()=>this.select(i)} style={{
                    backgroundColor: this.toStringHsl(this.state.uSwatch[i])}} key={i}>
                    {this.toStringRgb(this.state.uSwatch[i])}<br/>
                    {this.toStringHsl(this.state.uSwatch[i])}<br/>
@@ -401,8 +401,23 @@ class Swatch extends React.Component{
         selected: this.state.wSwatch[value]
       })
     }
-  };
-
+  }
+  copySwatch(type){
+    let swatch;
+    if(type === 'g'){
+      swatch = [this.state.activeColor];
+      this.state.genColor.map((value)=>{
+        swatch.push(value);
+      });
+      console.log(swatch);
+    }
+    else if (type === 'a'){
+      swatch = this.state.wSwatch;
+    }
+    this.setState({
+      uSwatch: swatch
+    })
+  }
   setSwatch(swatch){
 
     let keys = Object.keys(JSON.parse(this.state.sbSwatch[0].colors));
