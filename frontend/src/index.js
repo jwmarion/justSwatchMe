@@ -29,7 +29,9 @@ class Swatch extends React.Component{
       userInfo: null,
       colorType: 'hsl',
       selected:[[0,0,100]],
-      uSwatch: [[0,0,100]],
+      uSwatch: [[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100]],
+      wSwatch: [[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100]],
+      sbSwatch: [[[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100]],[[37, 100, 50],[2, 92, 57],[55,100,50],[123,100,50],[215,100,50],[275,100,50]]],
       hoverColor: [37, 100, 50],
       currentPic: './wheel.png',
       activeColor: [2, 92, 57],
@@ -43,14 +45,14 @@ class Swatch extends React.Component{
     // this.onSetOpen = this.onSetOpen.bind(this);
   }
 
-    onSetOpen(open) {
-      this.setState({open: open});
-    }
 
     componentDidUpdate(prevProps, prevState){
       if (prevState.activeColor !== this.state.activeColor ){
         this.generateColors();
       }
+      // if (prevState.sbSwatch !== this.state.sbSwatch ){
+      //   this.getTopSwatches();
+      // }
     }
 
     componentDidMount() {
@@ -58,6 +60,7 @@ class Swatch extends React.Component{
       let img = new Image();
       let canvas = ReactDOM.findDOMNode(this.refs.myCanvas);
       let ctx = canvas.getContext('2d');
+      this.getTopSwatches();
       img.src = this.state.currentPic;
       ctx.drawImage(img, 0, 0);
       img.onload = function(){
@@ -69,36 +72,8 @@ class Swatch extends React.Component{
         ctx.drawImage(img, (canvas.width / 2) - (img.width / 2), 0, img.width, canvas.height);
       };
     }
-    // renderPropNumber(prop) {
-    //   const setMethod = (ev) => {
-    //     const newState = {};
-    //     newState[prop] = parseInt(ev.target.value, 10);
-    //     this.setState(newState);
-    //   };
-    //
-    //   return (
-    //     <p key={prop}>
-    //        {prop} <input type="number" onChange={setMethod} value={this.state[prop]} />
-    //     </p>);
-    // }
-  render() {
-    // const sidebar = <b>Sidebar content</b>;
-    //
-    // const sidebarProps = {
-    //   sidebar: sidebar,
-    //   docked: this.state.docked,
-    //   sidebarClassName: 'custom-sidebar-class',
-    //   open: this.state.open,
-    //   touch: this.state.touch,
-    //   shadow: this.state.shadow,
-    //   pullRight: this.state.pullRight,
-    //   touchHandleWidth: this.state.touchHandleWidth,
-    //   dragToggleDistance: this.state.dragToggleDistance,
-    //   transitions: this.state.transitions,
-    //   onSetOpen: this.onSetOpen,
-    //   styles: styles
-    // };
 
+  render() {
     let topRight;
     if (this.state.userInfo !== null){
       topRight = (
@@ -119,27 +94,39 @@ class Swatch extends React.Component{
     }
 
     let sidebar;
-    if(this.state.open){
+    if(this.state.userInfo != null){
+    let keys = Object.keys(JSON.parse(this.state.sbSwatch[0].colors))
+    console.log(keys[0]);
+    console.log(keys);
+    let value = JSON.parse(this.state.sbSwatch[0].colors)[keys[0]];
+    console.log(value);
+      }
+    if(this.state.open && this.state.userInfo !=null ){
+
       sidebar=(
         <div className="sidebar">
         <h2>Your Swatches</h2>
         <button onClick={()=>this.setState({open: false})}>X</button>
-          {this.state.genColor.map((val,i)=>
-            <div className="sideColor" style={{backgroundColor: this.toStringHsl(val)}} key={i}>
-
-            </div>
+        {this.state.sbSwatch.map((swatch,j)=>
+          <div key={j}>
+          {Object.keys(JSON.parse(swatch.colors)).map((val,i)=>
+            <div key={i}className="sideColor" style={{backgroundColor: this.toStringHsl(JSON.parse(swatch.colors)[val])}}>
+              </div>
           )}
-          <button>Set Swatch</button><button>Delete</button>
+          <button onClick={()=>this.setSwatch(j)}>Set Swatch</button><button>Delete</button>
           </div>
-      )
+      )}
+      </div>
+    )
     }
-
     return (
       <div>
+//sidebar
       {sidebar}
-
+//topbar
       <div className="topBar">
         <div className="topLeft">
+//title
           <h1>
             just
             <span style={{color:this.toStringHsl(this.state.activeColor)}}>S</span>
@@ -154,6 +141,9 @@ class Swatch extends React.Component{
         </div>
         {topRight}
       </div>
+
+
+
         <div className="leftSide">
           <div className="buttons">
             <div className="hoverColor"  style={{
@@ -170,7 +160,7 @@ class Swatch extends React.Component{
           </div>
           <div className="rightSide">
             <div className="colors">
-              <div className="cd" id="colorDisplay2" onClick={()=>this.setSelected(-1)} style={{
+              <div className="cd" id="colorDisplay2" onClick={()=>this.setSelected(-1,'g')} style={{
                 backgroundColor: this.toStringHsl(this.state.activeColor)}}>
                 Active Color <br/>
                 {this.toStringRgb(this.state.activeColor)}<br/>
@@ -178,7 +168,7 @@ class Swatch extends React.Component{
                 {this.toStringHex(this.state.activeColor)}
                 </div>
                 {}
-              <div className="cd" id="colorDisplay3" onClick={()=>this.setSelected(0)} style={{
+              <div className="cd" id="colorDisplay3" onClick={()=>this.setSelected(0,'g')} style={{
                 backgroundColor: this.toStringHsl(this.state.genColor[0])}}>
                 Complementary Color<br/>
                 {this.toStringRgb(this.state.genColor[0])}<br/>
@@ -186,7 +176,7 @@ class Swatch extends React.Component{
                 {this.toStringHex(this.state.genColor[0])}
                 </div>
 
-              <div className="cd" id="colorDisplay4" onClick={()=>this.setSelected(1)} style={{
+              <div className="cd" id="colorDisplay4" onClick={()=>this.setSelected(1,'g')} style={{
                 backgroundColor: this.toStringHsl(this.state.genColor[1])}}>
                 split complementary 1<br/>
                 {this.toStringRgb(this.state.genColor[1])}<br/>
@@ -194,7 +184,7 @@ class Swatch extends React.Component{
                 {this.toStringHex(this.state.genColor[1])}
                 </div>
 
-              <div className="cd" id="colorDisplay5" onClick={()=>this.setSelected(2)} style={{
+              <div className="cd" id="colorDisplay5" onClick={()=>this.setSelected(2,'g')} style={{
                 backgroundColor: this.toStringHsl(this.state.genColor[2])}}>
                 split complementary 2<br/>
                 {this.toStringRgb(this.state.genColor[2])}<br/>
@@ -202,7 +192,7 @@ class Swatch extends React.Component{
                 {this.toStringHex(this.state.genColor[2])}
                 </div>
 
-              <div className="cd" id="colorDisplay6" onClick={()=>this.setSelected(3)} style={{
+              <div className="cd" id="colorDisplay6" onClick={()=>this.setSelected(3,'g')} style={{
                 backgroundColor: this.toStringHsl(this.state.genColor[3])}}>
                 Analogous 1<br/>
                 {this.toStringRgb(this.state.genColor[3])}<br/>
@@ -210,7 +200,7 @@ class Swatch extends React.Component{
                 {this.toStringHex(this.state.genColor[3])}
                 </div>
 
-              <div className="cd" id="colorDisplay7" onClick={()=>this.setSelected(4)} style={{
+              <div className="cd" id="colorDisplay7" onClick={()=>this.setSelected(4,'g')} style={{
                 backgroundColor: this.toStringHsl(this.state.genColor[4])}}>
                 Analogous 2<br/>
                 {this.toStringRgb(this.state.genColor[4])}<br/>
@@ -218,7 +208,7 @@ class Swatch extends React.Component{
                 {this.toStringHex(this.state.genColor[4])}
                 </div>
             </div>
-
+            <button style={{float: 'left',clear:'left'}} onClick={()=>this.copySwatch('g')}>copy</button>
           <div className="sliders">
           <input id="slider1"
             type="range"
@@ -248,9 +238,22 @@ class Swatch extends React.Component{
             </div>
 
           <div className="swatchArea">
+
+            <div className="activeSwatch">
+            {this.state.uSwatch.map((val,i)=>
+               <div className="cd" onClick={()=>this.setSelected(i,'a')} style={{
+                 backgroundColor: this.toStringHsl(this.state.wSwatch[i])}} key={i}>
+                 {this.toStringRgb(this.state.wSwatch[i])}<br/>
+                 {this.toStringHsl(this.state.wSwatch[i])}<br/>
+                 {this.toStringHex(this.state.wSwatch[i])}
+               </div>)}
+            </div>
+            <button onClick={()=>this.copySwatch('a')}>copy</button>
+
+
             <div className="userSwatch">
               {this.state.uSwatch.map((val,i)=>
-                 <div className="cd" onClick={()=>this.select(i)} style={{
+                 <div className="cd" onClick={()=>this.select(i,'u')} style={{
                    backgroundColor: this.toStringHsl(this.state.uSwatch[i])}} key={i}>
                    {this.toStringRgb(this.state.uSwatch[i])}<br/>
                    {this.toStringHsl(this.state.uSwatch[i])}<br/>
@@ -258,7 +261,9 @@ class Swatch extends React.Component{
                  </div>)}
             </div>
 
+
             <div className="slideMgmt">
+              <button onClick={()=>this.uploadSwatch()}>upload</button>
               <button onClick={()=>this.addRemoveTiles(1)}>+</button>
               <button onClick={()=>this.addRemoveTiles(-1)}>-</button>
             </div>
@@ -282,6 +287,26 @@ class Swatch extends React.Component{
     this.setState({
       currentPic: val
     });
+  }
+
+  getTopSwatches(){
+    let url = 'http://localhost:3003/api/swatches';
+    $.ajax({
+        type: 'GET',
+        url: url,
+        cache: false,
+        dataType: 'json',
+        success: function(data) {
+          console.log(data);
+          this.setState({
+            sbSwatch: data
+          });
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+
   }
 
   handleImage(e){
@@ -360,17 +385,39 @@ class Swatch extends React.Component{
     });
   }
 
-  setSelected(value){
-    if (value === -1){
+  setSelected(value,type){
+    if (type === 'g'){
+      if (value === -1){
+        this.setState({
+          selected: this.state.activeColor
+        })
+      }
+      else{
+        this.setState({
+          selected: this.state.genColor[value]
+      })}
+    } else {
       this.setState({
-        selected: this.state.activeColor
+        selected: this.state.wSwatch[value]
       })
     }
-    else{this.setState({
-      selected: this.state.genColor[value]
-    })}
   };
 
+  setSwatch(swatch){
+
+    let keys = Object.keys(JSON.parse(this.state.sbSwatch[0].colors));
+    let value = JSON.parse(this.state.sbSwatch[0].colors)[keys[0]];
+    console.log(value);
+
+    let r = [];
+    keys.map((val,i)=>{
+      r.push(JSON.parse(this.state.sbSwatch[swatch].colors)[val])
+    });
+
+    this.setState({
+      wSwatch:r
+    });
+  }
 
   logIn(data){
     console.log(data);
@@ -405,19 +452,19 @@ class Swatch extends React.Component{
        contentType: "application/json",
         dataType: 'json',
         data: JSON.stringify({
-          user: this.state.userInfo.username,
-          swatch: JSON.stringify({
-            color1: this.state.activeColor,
-            color2: this.state.genColor[0],
-            color3: this.state.genColor[1],
-            color4: this.state.genColor[2],
-            color5: this.state.genColor[3],
-            color26: this.state.genColor[4],
+          user: this.state.userInfo.id,
+          swatch:({
+            color1: this.state.uSwatch[0],
+            color2: this.state.uSwatch[1],
+            color3: this.state.uSwatch[2],
+            color4: this.state.uSwatch[3],
+            color5: this.state.uSwatch[4],
+            color6: this.state.uSwatch[5],
           })
         }),
         cache: false,
         success: function(data) {
-          this.setState({userInfo: data});
+          console.log('success');
         }.bind(this),
         error: function(xhr, status, err) {
           console.error(this.props.url, status, err.toString());
