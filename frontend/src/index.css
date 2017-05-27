@@ -53,14 +53,7 @@ span{
   float: left;
   border: 1px solid black;
 }
-#my-image{
-  background-color: yellow;
-}
 
-Slider{
-  height: 10px;
-  width: 50px;
-}
 .slideMgmt{
   float: left;
   clear: left;
@@ -76,7 +69,14 @@ Slider{
 .rightSide{
   float: left;
 }
-.sliders input{
+.slider input{
+  float: left;
+
+}
+.slider{
+  float: left;
+}
+.slider label{
   float: left;
   clear: left;
 }

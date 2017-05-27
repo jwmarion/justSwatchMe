@@ -35,7 +35,7 @@ class Swatch extends React.Component{
       hoverColor: [37, 100, 50],
       currentPic: './wheel.png',
       activeColor: [2, 92, 57],
-      sliderValue: [2,92,57],
+      rgbColor: [246,51,44],
       genColor: [[37, 100, 50],[55,100,50],[123,100,50],[215,100,50],[275,100,50]],
       value: 10,
       pLog: null,
@@ -94,12 +94,12 @@ class Swatch extends React.Component{
     }
 
     let sidebar;
-    if(this.state.userInfo != null){
-    let keys = Object.keys(JSON.parse(this.state.sbSwatch[0].colors))
-    console.log(keys[0]);
-    console.log(keys);
-    let value = JSON.parse(this.state.sbSwatch[0].colors)[keys[0]];
-    console.log(value);
+    if(this.state.userInfo != null && this.state.sbSwatch[0] != null){
+      let keys = Object.keys(JSON.parse(this.state.sbSwatch[0].colors))
+      console.log(keys[0]);
+      console.log(keys);
+      let value = JSON.parse(this.state.sbSwatch[0].colors)[keys[0]];
+      console.log(value);
       }
     if(this.state.open && this.state.userInfo !=null ){
 
@@ -209,34 +209,69 @@ class Swatch extends React.Component{
                 </div>
             </div>
             <button style={{float: 'left',clear:'left'}} onClick={()=>this.copySwatch('g')}>copy</button>
+//sliders
           <div className="sliders">
-          <input id="slider1"
-            type="range"
-            value={this.state.activeColor[0]}
-            min={0}
-            max={this.state.colorType === 'hsl'?360:255}
-            onInput={(event)=>{this.sliderChange(0,event)}}
-            onChange={(event)=>{this.sliderChange(0,event)}}
-
-            step={1} />
-          <input id="slider2"
-            type="range"
-            value={this.state.activeColor[1]}
-            min={0}
-            max={this.state.colorType === 'hsl'?100:255}
-            onInput={(event)=>{this.sliderChange(1,event)}}
-            onChange={(event)=>{this.sliderChange(1,event)}}
-            step={1} />
-          <input id="slider3"
-            type="range"
-            value={this.state.activeColor[2]}
-            min={0}
-            max={this.state.colorType === 'hsl'?100:255}
-            onInput={(event)=>{this.sliderChange(2,event)}}
-            onChange={(event)=>{this.sliderChange(2,event)}}
-            step={1} />
+            <div className="slider">
+            <label>H</label>
+              <input
+                type="range"
+                value={this.state.activeColor[0]}
+                min={0}
+                max={360}
+                onInput={(event)=>{this.sliderChange(0,event.target.value)}}
+                onChange={(event)=>{this.sliderChange(0,event.target.value)}}
+                step={1} />
+              <label>S</label>
+              <input
+                type="range"
+                value={this.state.activeColor[1]}
+                min={0}
+                max={100}
+                onInput={(event)=>{this.sliderChange(1,event.target.value)}}
+                onChange={(event)=>{this.sliderChange(1,event.target.value)}}
+                step={1} />
+              <label>L</label>
+              <input
+                type="range"
+                value={this.state.activeColor[2]}
+                min={0}
+                max={100}
+                onInput={(event)=>{this.sliderChange(2,event.target.value)}}
+                onChange={(event)=>{this.sliderChange(2,event.target.value)}}
+                step={1} />
+                </div>
             </div>
-
+            <div className="slider">
+            <label>R</label>
+              <input
+                type="range"
+                value={this.state.rgbColor[0]}
+                min={0}
+                max={255}
+                onInput={(event)=>{this.sliderChange(3,event.target.value)}}
+                onChange={(event)=>{this.sliderChange(3,event.target.value)}}
+                step={1} />
+              <label>G</label>
+              <input
+                type="range"
+                value={this.state.rgbColor[1]}
+                min={0}
+                max={255}
+                onInput={(event)=>{this.sliderChange(4,event.target.value)}}
+                onChange={(event)=>{this.sliderChange(4,event.target.value)}}
+                step={1} />
+              <label>B</label>
+              <input
+                type="range"
+                value={this.state.rgbColor[2]}
+                min={0}
+                max={255}
+                onInput={(event)=>{this.sliderChange(5,event.target.value)}}
+                onChange={(event)=>{this.sliderChange(5,event.target.value)}}
+                step={1} />
+              </div>
+            </div>
+            <button onClick={()=>console.log(hslToRgb(this.state.activeColor[0]/360,this.state.activeColor[1]/100,this.state.activeColor[2]/100))}>TEST</button>
           <div className="swatchArea">
 
             <div className="activeSwatch">
@@ -264,10 +299,9 @@ class Swatch extends React.Component{
 
             <div className="slideMgmt">
               <button onClick={()=>this.uploadSwatch()}>upload</button>
-              <button onClick={()=>this.addRemoveTiles(1)}>+</button>
-              <button onClick={()=>this.addRemoveTiles(-1)}>-</button>
             </div>
-          </div>
+
+
         </div>
       </div>
     )
@@ -298,9 +332,11 @@ class Swatch extends React.Component{
         dataType: 'json',
         success: function(data) {
           console.log(data);
+        if(data !== null){
           this.setState({
+
             sbSwatch: data
-          });
+          });}
         }.bind(this),
         error: function(xhr, status, err) {
           console.error(this.props.url, status, err.toString());
@@ -340,8 +376,10 @@ class Swatch extends React.Component{
                  ', ' + data[2] + ', ' + (data[3] / 255) + ')';
 
       var hsl = rgbToHsl(data[0],data[1],data[2]);
+      let rgbColor=hslToRgb(hsl[0],hsl[1],hsl[2]);
       this.setState({
-        activeColor:[hsl[0] * 360, hsl[1]*100, hsl[2]*100]
+        activeColor:[hsl[0] * 360, hsl[1]*100, hsl[2]*100],
+        rgbColor: rgbColor
     })
   }
 
@@ -380,8 +418,11 @@ class Swatch extends React.Component{
     }
     avg = [avg[0]/pCount,avg[1]/pCount,avg[2]/pCount,avg[3]/pCount];
     var comp = rgbToHsl(Math.floor(avg[0]),+ Math.floor(avg[1]),Math.floor(avg[2]));
+    let color = [(comp[0] * 360),(comp[1]*100),(comp[2] *100)]
+    let rgbColor = hslToRgb(comp[0],comp[1],comp[2]);
     this.setState({
-      activeColor:[(comp[0] * 360),(comp[1]*100),(comp[2] *100)]
+      activeColor: color,
+      rgbColor: rgbColor
     });
   }
 
@@ -540,9 +581,20 @@ class Swatch extends React.Component{
 
   sliderChange(value,event){
     let temp = this.state.activeColor;
-    temp[value] = event.target.value;
+    if (value > 2){
+      value -= 3;
+      temp = hslToRgb(temp[0]/360,temp[1]/100,temp[2]/100);
+      temp[value] = event;
+      temp = rgbToHsl(temp[0],temp[1],temp[2]);
+      temp= [temp[0]*360, temp[1]*100, temp[2]*100];
+    }
+    else{
+      temp[value] = event;
+    }
+    let rgbColor = hslToRgb(temp[0]/360,temp[1]/100,temp[2]/100);
     this.setState({
-      activeColor: temp
+      activeColor: temp,
+      rgbColor: rgbColor
     });
     this.generateColors();
   }
@@ -605,7 +657,7 @@ function rgbToHsl(r, g, b) {
     h /= 6;
   }
 
-  return [ h, s, l ];
+  return [h, s, l ];
 }
 /**
  * Converts an HSL color value to RGB. Conversion formula
