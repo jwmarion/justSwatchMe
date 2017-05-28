@@ -2,23 +2,7 @@ import React,{Component} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import $ from 'jquery';
-// import Sidebar from 'react-sidebar';
 
-
-// const styles = {
-//   contentHeaderMenuLink: {
-//     textDecoration: 'none',
-//     color: 'white',
-//     padding: 8,
-//   },
-//   content: {
-//     padding: '16px'
-//   },
-//   sidebar:{
-//     width: '300px',
-//     backgroundColor: 'white'
-//   }
-// };
 
 class Swatch extends React.Component{
   constructor(){
@@ -26,12 +10,14 @@ class Swatch extends React.Component{
     super();
     this.state = {
       open: false,
+      swatchPage:0,
       userInfo: null,
       colorType: 'hsl',
+      topSwatches:[[[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100]],[[37, 100, 50],[2, 92, 57],[55,100,50],[123,100,50],[215,100,50],[275,100,50]]],
       selected:[[0,0,100]],
       uSwatch: [[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100]],
-      wSwatch: [[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100]],
-      sbSwatch: [[[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100]],[[37, 100, 50],[2, 92, 57],[55,100,50],[123,100,50],[215,100,50],[275,100,50]]],
+      wSwatch: null,
+      userSwatch: [[[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100]],[[37, 100, 50],[2, 92, 57],[55,100,50],[123,100,50],[215,100,50],[275,100,50]]],
       hoverColor: [37, 100, 50],
       currentPic: './wheel.png',
       activeColor: [2, 92, 57],
@@ -50,9 +36,7 @@ class Swatch extends React.Component{
       if (prevState.activeColor !== this.state.activeColor ){
         this.generateColors();
       }
-      // if (prevState.sbSwatch !== this.state.sbSwatch ){
-      //   this.getTopSwatches();
-      // }
+
     }
 
     componentDidMount() {
@@ -65,8 +49,8 @@ class Swatch extends React.Component{
       ctx.drawImage(img, 0, 0);
       img.onload = function(){
         let ratio = this.height / this.width;
-        img.width = 500;
-        img.height = 500 *ratio;
+        img.width = 400;
+        img.height = 400 *ratio;
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, (canvas.width / 2) - (img.width / 2), 0, img.width, canvas.height);
@@ -75,6 +59,26 @@ class Swatch extends React.Component{
 
   render() {
     let topRight;
+    let activeSwatch;
+
+    if (this.state.wSwatch != null){
+    activeSwatch =  <div className="activeSwatch">
+  <div>
+      {this.state.uSwatch.map((val,i)=>
+         <div className="cd" onClick={()=>this.setSelected(i,'a')} style={{
+           backgroundColor: this.toStringHsl(this.state.wSwatch[i])}} key={i}>
+           {this.toStringRgb(this.state.wSwatch[i])}<br/>
+           {this.toStringHsl(this.state.wSwatch[i])}<br/>
+           {this.toStringHex(this.state.wSwatch[i])}
+         </div>)}
+      </div>
+        <button onClick={()=>this.copySwatch('a')}>copy</button>
+      </div>
+    }
+
+
+
+
     if (this.state.userInfo !== null){
       topRight = (
       <div className='topRight'>
@@ -94,26 +98,30 @@ class Swatch extends React.Component{
     }
 
     let sidebar;
-    if(this.state.userInfo != null && this.state.sbSwatch[0] != null){
-      let keys = Object.keys(JSON.parse(this.state.sbSwatch[0].colors))
+    if(this.state.userInfo != null && this.state.topSwatches[0] != null){
+      let keys = Object.keys(JSON.parse(this.state.topSwatches[0].colors))
       console.log(keys[0]);
       console.log(keys);
-      let value = JSON.parse(this.state.sbSwatch[0].colors)[keys[0]];
+      let value = JSON.parse(this.state.topSwatches[0].colors)[keys[0]];
       console.log(value);
       }
-    if(this.state.open && this.state.userInfo !=null ){
+    if(this.state.open){
 
       sidebar=(
         <div className="sidebar">
-        <h2>Your Swatches</h2>
+        <button onClick={()=>this.getTopSwatches()}>Top</button>
+        <button onClick={()=>this.getUserSwatches()}>Yours</button>
+        <button onClick={()=>this.getFavoriteSwatches()}>Fav</button>
         <button onClick={()=>this.setState({open: false})}>X</button>
-        {this.state.sbSwatch.map((swatch,j)=>
+        {this.state.topSwatches.map((swatch,j)=>
           <div key={j}>
           {Object.keys(JSON.parse(swatch.colors)).map((val,i)=>
             <div key={i}className="sideColor" style={{backgroundColor: this.toStringHsl(JSON.parse(swatch.colors)[val])}}>
               </div>
           )}
           <button onClick={()=>this.setSwatch(j)}>Set Swatch</button><button>Delete</button>
+          <button onClick={()=>this.setFavorite([this.state.userInfo.id,swatch.id])}>Favorite</button>
+
           </div>
       )}
       </div>
@@ -121,12 +129,12 @@ class Swatch extends React.Component{
     }
     return (
       <div>
-//sidebar
+
       {sidebar}
-//topbar
+
       <div className="topBar">
         <div className="topLeft">
-//title
+
           <h1>
             just
             <span style={{color:this.toStringHsl(this.state.activeColor)}}>S</span>
@@ -150,13 +158,81 @@ class Swatch extends React.Component{
               backgroundColor: this.toStringHsl(this.state.hoverColor)}}></div>
             <button id="b1" type="button" name="button" onClick={()=>this.setState({img: './wheel.jpeg'})}>Color Wheel</button>
             <button id="b5" type="button" name="button" onClick={()=>this.averageColor()} >Get Average Color</button>
-          <input type="file" id="imageLoader" name="imageLoader" onChange={(event)=>
-            { this.handleImage(event) }}
-            onClick={(event)=> { event.target.value = null
-            }}/>
+            <input type="file" id="imageLoader" name="imageLoader" onChange={(event)=>
+              { this.handleImage(event) }}
+              onClick={(event)=> { event.target.value = null
+              }}/>
           </div>
           <canvas ref="myCanvas" className="myCanvas"width="400" height="300" onMouseMove={(event)=>this.hoverColor(event)} onClick={(event)=>this.pick(event)}></canvas>
           <img id="my-image" src="" alt=""/>
+
+          <div className="sliders">
+            <div className="slider">
+            <label>H</label>
+              <input
+                type="range"
+                value={this.state.activeColor[0]}
+                min={0}
+                max={360}
+                onInput={(event)=>{this.sliderChange(0,event.target.value)}}
+                onChange={(event)=>{this.sliderChange(0,event.target.value)}}
+                step={1} />
+              <label>S</label>
+              <input
+                type="range"
+                value={this.state.activeColor[1]}
+                min={0}
+                max={100}
+                onInput={(event)=>{this.sliderChange(1,event.target.value)}}
+                onChange={(event)=>{this.sliderChange(1,event.target.value)}}
+                step={1} />
+              <label>L</label>
+              <input
+                type="range"
+                value={this.state.activeColor[2]}
+                min={0}
+                max={100}
+                onInput={(event)=>{this.sliderChange(2,event.target.value)}}
+                onChange={(event)=>{this.sliderChange(2,event.target.value)}}
+                step={1} />
+              </div>
+
+            <div className="slider">
+            <label>R</label>
+              <input
+                type="range"
+                value={this.state.rgbColor[0]}
+                min={0}
+                max={255}
+                onInput={(event)=>{this.sliderChange(3,event.target.value)}}
+                onChange={(event)=>{this.sliderChange(3,event.target.value)}}
+                step={1} />
+              <label>G</label>
+              <input
+                type="range"
+                value={this.state.rgbColor[1]}
+                min={0}
+                max={255}
+                onInput={(event)=>{this.sliderChange(4,event.target.value)}}
+                onChange={(event)=>{this.sliderChange(4,event.target.value)}}
+                step={1} />
+              <label>B</label>
+              <input
+                type="range"
+                value={this.state.rgbColor[2]}
+                min={0}
+                max={255}
+                onInput={(event)=>{this.sliderChange(5,event.target.value)}}
+                onChange={(event)=>{this.sliderChange(5,event.target.value)}}
+                step={1} />
+              </div>
+            </div>
+
+
+
+
+
+
           </div>
           <div className="rightSide">
             <div className="colors">
@@ -209,81 +285,13 @@ class Swatch extends React.Component{
                 </div>
             </div>
             <button style={{float: 'left',clear:'left'}} onClick={()=>this.copySwatch('g')}>copy</button>
-//sliders
-          <div className="sliders">
-            <div className="slider">
-            <label>H</label>
-              <input
-                type="range"
-                value={this.state.activeColor[0]}
-                min={0}
-                max={360}
-                onInput={(event)=>{this.sliderChange(0,event.target.value)}}
-                onChange={(event)=>{this.sliderChange(0,event.target.value)}}
-                step={1} />
-              <label>S</label>
-              <input
-                type="range"
-                value={this.state.activeColor[1]}
-                min={0}
-                max={100}
-                onInput={(event)=>{this.sliderChange(1,event.target.value)}}
-                onChange={(event)=>{this.sliderChange(1,event.target.value)}}
-                step={1} />
-              <label>L</label>
-              <input
-                type="range"
-                value={this.state.activeColor[2]}
-                min={0}
-                max={100}
-                onInput={(event)=>{this.sliderChange(2,event.target.value)}}
-                onChange={(event)=>{this.sliderChange(2,event.target.value)}}
-                step={1} />
-                </div>
-            </div>
-            <div className="slider">
-            <label>R</label>
-              <input
-                type="range"
-                value={this.state.rgbColor[0]}
-                min={0}
-                max={255}
-                onInput={(event)=>{this.sliderChange(3,event.target.value)}}
-                onChange={(event)=>{this.sliderChange(3,event.target.value)}}
-                step={1} />
-              <label>G</label>
-              <input
-                type="range"
-                value={this.state.rgbColor[1]}
-                min={0}
-                max={255}
-                onInput={(event)=>{this.sliderChange(4,event.target.value)}}
-                onChange={(event)=>{this.sliderChange(4,event.target.value)}}
-                step={1} />
-              <label>B</label>
-              <input
-                type="range"
-                value={this.state.rgbColor[2]}
-                min={0}
-                max={255}
-                onInput={(event)=>{this.sliderChange(5,event.target.value)}}
-                onChange={(event)=>{this.sliderChange(5,event.target.value)}}
-                step={1} />
-              </div>
-            </div>
-            <button onClick={()=>console.log(hslToRgb(this.state.activeColor[0]/360,this.state.activeColor[1]/100,this.state.activeColor[2]/100))}>TEST</button>
+
+
+
           <div className="swatchArea">
 
-            <div className="activeSwatch">
-            {this.state.uSwatch.map((val,i)=>
-               <div className="cd" onClick={()=>this.setSelected(i,'a')} style={{
-                 backgroundColor: this.toStringHsl(this.state.wSwatch[i])}} key={i}>
-                 {this.toStringRgb(this.state.wSwatch[i])}<br/>
-                 {this.toStringHsl(this.state.wSwatch[i])}<br/>
-                 {this.toStringHex(this.state.wSwatch[i])}
-               </div>)}
-            </div>
-            <button onClick={()=>this.copySwatch('a')}>copy</button>
+          {activeSwatch}
+
 
 
             <div className="userSwatch">
@@ -300,7 +308,7 @@ class Swatch extends React.Component{
             <div className="slideMgmt">
               <button onClick={()=>this.uploadSwatch()}>upload</button>
             </div>
-
+            </div>
 
         </div>
       </div>
@@ -324,25 +332,80 @@ class Swatch extends React.Component{
   }
 
   getTopSwatches(){
-    let url = 'http://localhost:3003/api/swatches';
+    let url = 'http://localhost:3003/api/swatches_top';
+    let page = this.state.swatchPage;
+    console.log(page);
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         url: url,
         cache: false,
         dataType: 'json',
+        contentType: "application/json",
+        data: JSON.stringify({
+          page: page
+        }),
         success: function(data) {
           console.log(data);
         if(data !== null){
+          console.log(data);
           this.setState({
-
-            sbSwatch: data
+            topSwatches: data
           });}
         }.bind(this),
         error: function(xhr, status, err) {
           console.error(this.props.url, status, err.toString());
         }.bind(this)
       });
+  }
 
+  getUserSwatches(){
+    let url = 'http://localhost:3003/api/swatches_user';
+    $.ajax({
+        type: 'POST',
+        url: url,
+        cache: false,
+        dataType: 'json',
+        contentType: "application/json",
+        data: JSON.stringify({
+          userid: this.state.userInfo.id,
+          page: this.state.swatchPage
+        }),
+        success: function(data) {
+          console.log(data);
+        if(data !== null){
+          this.setState({
+            topSwatches: data
+          });}
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+  }
+
+  getFavoriteSwatches(){
+    let url = 'http://localhost:3003/api/swatches_favorite';
+    $.ajax({
+        type: 'POST',
+        url: url,
+        cache: false,
+        dataType: 'json',
+        contentType: "application/json",
+        data: JSON.stringify({
+          userid: this.state.userInfo.id,
+          page: this.state.swatchPage
+        }),
+        success: function(data) {
+          console.log(data);
+        if(data !== null){
+          this.setState({
+            topSwatches: data
+          });}
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
   }
 
   handleImage(e){
@@ -405,8 +468,8 @@ class Swatch extends React.Component{
     var color2 = document.getElementById('colorDisplay2');
     var avg = [0,0,0,0];
     var pCount = 0;
-    for(var x = 0; x < ctx.canvas.width-10; x+=10){
-      for(var y = 0; y < ctx.canvas.height-10; y+=10){
+    for(var x = 0; x < ctx.canvas.width-5; x+=5){
+      for(var y = 0; y < ctx.canvas.height-5; y+=5){
         var pixel = ctx.getImageData(x, y, 1, 1);
         data = pixel.data;
         avg[0]=avg[0]+data[0];
@@ -461,13 +524,13 @@ class Swatch extends React.Component{
   }
   setSwatch(swatch){
 
-    let keys = Object.keys(JSON.parse(this.state.sbSwatch[0].colors));
-    let value = JSON.parse(this.state.sbSwatch[0].colors)[keys[0]];
+    let keys = Object.keys(JSON.parse(this.state.topSwatches[0].colors));
+    let value = JSON.parse(this.state.topSwatches[0].colors)[keys[0]];
     console.log(value);
 
     let r = [];
     keys.map((val,i)=>{
-      r.push(JSON.parse(this.state.sbSwatch[swatch].colors)[val])
+      r.push(JSON.parse(this.state.topSwatches[swatch].colors)[val])
     });
 
     this.setState({
@@ -497,6 +560,23 @@ class Swatch extends React.Component{
       });
     }
 
+  setFavorite(data){
+    let url = 'http://localhost:3003/api/user/set_favorite';
+    $.ajax({
+        type: 'POST',
+        url: url,
+       contentType: "application/json",
+        dataType: 'json',
+        data: JSON.stringify({//userid/swatchid
+          userid: data[0],
+          swatchid: data[1]
+        }),
+        cache: false,
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+    }
 
 
 

@@ -22,6 +22,41 @@ app.get('/api/swatches', (req, resp, next) => {
     .catch(next);
 });
 
+app.post('/api/swatches_top', (req, resp, next) => {
+  let page = req.body.page * 10;
+  db.any('select * from swatch order by swatch.votes desc limit 10 offset $1',page)
+    .then(data => resp.json(data))
+    .catch(next);
+});
+
+app.post('/api/swatches_favorite', (req, resp, next) => {
+  let page = req.body.page * 10;
+  db.any('select * from swatch join favorite on swatch.id = favorite.swatchid where favorite.userid = $1 limit 10 offset $2',[req.body.userid, page])
+    .then(data => resp.json(data))
+    .catch(next);
+});
+
+app.post('/api/swatches_user', (req, resp, next) => {
+  let page = req.body.page * 10;
+  db.any('select * from swatch where userid = $1 limit 10 offset $1',[req.body.userid,page*10])
+    .then(data => resp.json(data))
+    .catch(next);
+});
+
+app.post('/api/user/set_favorite', (req, resp, next) => {
+  let data = req.body;
+  db.one(`
+    insert into "favorite" values (default, $1, $2)
+    `,
+    [
+      data.userid,
+      data.swatchid
+    ]
+  )
+  .then(resp.json('complete'))
+  .catch(next);
+});
+
 app.post('/api/user/signup', (req, resp, next) => {
   let data = req.body;
   console.log(req.body);
@@ -65,7 +100,6 @@ app.post('/api/user/login', (req, resp, next) => {
       });
     });
 });
-
 
 app.post('/api/user/postswatch', (req, resp, next) => {
   db.none(
