@@ -13,6 +13,7 @@ class Swatch extends React.Component{
       swatchPage:0,
       userInfo: null,
       colorType: 'hsl',
+      pageType: 'top',
       topSwatches:[[[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100]],[[37, 100, 50],[2, 92, 57],[55,100,50],[123,100,50],[215,100,50],[275,100,50]]],
       selected:[[0,0,100]],
       uSwatch: [[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100]],
@@ -35,6 +36,17 @@ class Swatch extends React.Component{
     componentDidUpdate(prevProps, prevState){
       if (prevState.activeColor !== this.state.activeColor ){
         this.generateColors();
+      }
+      if( prevState.swatchPage !== this.state.swatchPage || prevState.pageType !== this.state.pageType){
+        if(this.state.pageType === 'top'){
+          this.getTopSwatches();
+        } else if
+        (this.state.pageType === 'fav'){
+          this.getFavoriteSwatches();
+        }
+        else{
+          this.getUserSwatches();
+        }
       }
 
     }
@@ -109,9 +121,9 @@ class Swatch extends React.Component{
 
       sidebar=(
         <div className="sidebar">
-        <button onClick={()=>this.getTopSwatches()}>Top</button>
-        <button onClick={()=>this.getUserSwatches()}>Yours</button>
-        <button onClick={()=>this.getFavoriteSwatches()}>Fav</button>
+        <button onClick={()=>this.setState({pageType:'top', swatchPage: 0})}>Top</button>
+        <button onClick={()=>this.setState({pageType:'user', swatchPage: 0})}>Yours</button>
+        <button onClick={()=>this.setState({pageType:'fav', swatchPage: 0})}>Fav</button>
         <button onClick={()=>this.setState({open: false})}>X</button>
         {this.state.topSwatches.map((swatch,j)=>
           <div key={j}>
@@ -124,6 +136,8 @@ class Swatch extends React.Component{
 
           </div>
       )}
+      <button onClick={()=>this.changePage(1)}>Next</button>
+      <button onClick={()=>this.changePage(-1)}>prev</button>
       </div>
     )
     }
@@ -133,6 +147,7 @@ class Swatch extends React.Component{
       {sidebar}
 
       <div className="topBar">
+            {topRight}
         <div className="topLeft">
 
           <h1>
@@ -147,7 +162,7 @@ class Swatch extends React.Component{
           </h1>
           <button onClick={()=>(this.setState({open: true}))}>Swatches</button>
         </div>
-        {topRight}
+
       </div>
 
 
@@ -227,10 +242,6 @@ class Swatch extends React.Component{
                 step={1} />
               </div>
             </div>
-
-
-
-
 
 
           </div>
@@ -315,6 +326,20 @@ class Swatch extends React.Component{
     )
   }
 
+  changePage(val){
+    this.setState({
+      swatchPage: this.state.swatchPage + val
+    });
+    let check = this.state.pageType;
+    if( check = 'top'){
+      this.getTopSwatches();
+    }else if(check = 'user'){
+      this.getUserSwatches();
+    }else if(check = 'fav'){
+      this.getFavoriteSwatches();
+    }
+
+  }
   changePic(value){
     let val = '';
     if(value ==1){
