@@ -8,16 +8,16 @@ const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const cors = require('cors');
 
-// const db = pgp({
-//   database: 'justswatchme'
-// });
-const config = require('./dbc.js');
 const db = pgp({
-    host: config.host,
-    database: config.database,
-    user: config.user,
-    password: config.password
+  database: 'justswatchme'
 });
+// const config = require('./dbc.js');
+// const db = pgp({
+//     host: config.host,
+//     database: config.database,
+//     user: config.user,
+//     password: config.password
+// });
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -47,6 +47,19 @@ app.post('/api/swatches_user', (req, resp, next) => {
   db.any('select * from swatch where userid = $1 limit 10 offset $1',[req.body.userid,page*10])
     .then(data => resp.json(data))
     .catch(next);
+});
+
+app.post('/api/delete_swatch', (req, resp, next) => {
+  let data = req.body;
+  db.none(`
+    delete from "swatch" where id = $1
+    `,
+    [
+      data.swatch
+    ]
+  )
+  .then(resp.json('complete'))
+  .catch(next);
 });
 
 app.post('/api/user/set_favorite', (req, resp, next) => {

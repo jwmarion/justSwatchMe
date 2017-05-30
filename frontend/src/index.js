@@ -124,7 +124,7 @@ class Swatch extends React.Component{
     let sidebar;
     let logInButtons;
     let uploadButton;
-
+    // let deleteButton;
     if (this.state.userInfo != null){
     uploadButton=<button onClick={()=>this.uploadSwatch()}>upload</button>;
     logInButtons=
@@ -133,6 +133,9 @@ class Swatch extends React.Component{
       <button onClick={()=>this.setState({pageType:'fav', swatchPage: 0})}>Favorites</button>
       </div>
     }
+    // if(this.state.pageType === 'user'){
+    //   delete =
+    // }
     if(this.state.userInfo != null && this.state.topSwatches[0] != null){
       let keys = Object.keys(JSON.parse(this.state.topSwatches[0].colors))
       console.log(keys[0]);
@@ -152,7 +155,8 @@ class Swatch extends React.Component{
             <div key={i}className="sideColor" style={{backgroundColor: this.toStringHsl(JSON.parse(swatch.colors)[val])}}>
               </div>
           )}
-          <button onClick={()=>this.setSwatch(j)}>Set Swatch</button><button>Delete</button>
+          <button onClick={()=>this.setSwatch(j)}>Set Swatch</button>
+          {(this.state.pageType==='user'?(<button onClick={()=>this.deleteSwatch(swatch.id)}>Delete</button>):null)}
           <button onClick={()=>this.setFavorite([this.state.userInfo.id,swatch.id])}>Favorite</button>
 
           </div>
@@ -198,7 +202,7 @@ class Swatch extends React.Component{
         <div className="leftSide">
           <div className="buttons">
 
-            <button id="b1" type="button" name="button" onClick={()=>this.setState({img: './wheel.jpeg'})}>Color Wheel</button>
+            <button id="b1" type="button" name="button" onClick={()=>this.setWheel()}>Color Wheel</button>
             <button id="b5" type="button" name="button" onClick={()=>this.averageColor()} >Get Average Color</button>
             <input type="file" id="imageLoader" name="imageLoader" onChange={(event)=>
               { this.handleImage(event) }}
@@ -499,8 +503,8 @@ class Swatch extends React.Component{
       var img = new Image();
       img.onload = function(){
         let ratio = this.height / this.width;
-        img.width = 500;
-        img.height = 500 *ratio;
+        img.width = 400;
+        img.height = 400 *ratio;
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, (canvas.width / 2) - (img.width / 2), 0, img.width, canvas.height);
@@ -619,6 +623,22 @@ class Swatch extends React.Component{
       wSwatch:r
     });
   }
+  setWheel(){
+    let img = new Image();
+    let canvas = ReactDOM.findDOMNode(this.refs.myCanvas);
+    let ctx = canvas.getContext('2d');
+    this.getTopSwatches();
+    img.src = './wheel.png';
+    ctx.drawImage(img, 0, 0);
+    img.onload = function(){
+      let ratio = this.height / this.width;
+      img.width = 400;
+      img.height = 400 *ratio;
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, (canvas.width / 2) - (img.width / 2), 0, img.width, canvas.height);
+    };
+  }
 
   logIn(data){
     console.log(data);
@@ -660,6 +680,25 @@ class Swatch extends React.Component{
       });
     }
 
+  deleteSwatch(swatch){
+    let url = BASEURL+'/api/delete_swatch';
+    $.ajax({
+        type: 'POST',
+        url: url,
+       contentType: "application/json",
+        dataType: 'json',
+        data: JSON.stringify({
+          swatchid: swatch
+        }),
+        cache: false,
+        success: function(data) {
+          console.log('success');
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+    }
 
 
   uploadSwatch(){
