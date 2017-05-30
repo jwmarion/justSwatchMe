@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import $ from 'jquery';
-
+import BASEURL from './baseurl';
 
 class Swatch extends React.Component{
   constructor(){
@@ -397,7 +397,7 @@ class Swatch extends React.Component{
   }
 
   getTopSwatches(){
-    let url = 'http://localhost:3003/api/swatches_top';
+    let url = BASEURL+'/api/swatches_top';
     let page = this.state.swatchPage;
     console.log(page);
     $.ajax({
@@ -424,7 +424,7 @@ class Swatch extends React.Component{
   }
 
   getUserSwatches(){
-    let url = 'http://localhost:3003/api/swatches_user';
+    let url = BASEURL+'/api/swatches_user';
     $.ajax({
         type: 'POST',
         url: url,
@@ -448,7 +448,7 @@ class Swatch extends React.Component{
       });
   }
   signUp(){
-    let url = 'http://localhost:3003/api/user/signup';
+    let url = BASEURL+'/api/user/signup';
     $.ajax({
         type: 'POST',
         url: url,
@@ -466,7 +466,7 @@ class Swatch extends React.Component{
 
   }
   getFavoriteSwatches(){
-    let url = 'http://localhost:3003/api/swatches_favorite';
+    let url = BASEURL+'/api/swatches_favorite';
     $.ajax({
         type: 'POST',
         url: url,
@@ -622,7 +622,7 @@ class Swatch extends React.Component{
 
   logIn(data){
     console.log(data);
-    let url = 'http://localhost:3003/api/user/login';
+    let url = BASEURL+'/api/user/login';
     $.ajax({
         type: 'POST',
         url: url,
@@ -643,7 +643,7 @@ class Swatch extends React.Component{
     }
 
   setFavorite(data){
-    let url = 'http://localhost:3003/api/user/set_favorite';
+    let url = BASEURL+'/api/user/set_favorite';
     $.ajax({
         type: 'POST',
         url: url,
@@ -663,7 +663,7 @@ class Swatch extends React.Component{
 
 
   uploadSwatch(){
-    let url = 'http://localhost:3003/api/user/postswatch';
+    let url = BASEURL+'/api/user/postswatch';
     $.ajax({
         type: 'POST',
         url: url,

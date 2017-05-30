@@ -11,7 +11,7 @@ const cors = require('cors');
 // const db = pgp({
 //   database: 'justswatchme'
 // });
-const config = require('./config/dbc.js');
+const config = require('./dbc.js');
 const db = pgp({
     host: config.host,
     database: config.database,
