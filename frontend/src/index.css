@@ -27,6 +27,15 @@ h1{
 .leftSide{
   background-color: #595855;
   border-radius: 25px;
+  float: left;
+  margin-top: 6vw;
+}
+.rightSide{
+  background-color: #595855;
+  border-radius: 25px;
+  margin-left: 1vw;
+  float: left;
+  margin-top: 6vw;
 }
 .slideMgmt{
   padding-bottom: 1.5vw;
@@ -56,11 +65,7 @@ h1{
   padding-top: 30px;
 }
 
-.rightSide{
-  background-color: #595855;
-  border-radius: 25px;
-  margin-left: 1vw;
-}
+
 .sliders{
   margin-left: 2vw;
   background-color: #595855;
@@ -92,15 +97,19 @@ button{
     height: 2px;
     background-color: black;
     margin: 5px 0;
+    padding: none;
+
 }
 .burger div:first-of-type{
-  margin-top: 2vw;;
+  margin-top: .75vw;
 }
 .burger{
   height: 3vw;
   float: left;
-  margin: 2px 3px;
+  margin: 10px 12px;
   margin-right: 10px;
+  border: solid 1px black;
+
 }
 
 .sideItem{
@@ -123,7 +132,7 @@ span{
   height: 5vw;
 }
 .title{
-  margin-left: 3vw;
+  margin-left: 1.5vw;
   float: left
 }
 .logInButtons{
@@ -149,6 +158,9 @@ span{
 .userSwatch div:nth-of-type(6n+7){
   clear: left;
 }
+.userSwatch{
+  clear: left;
+}
 .colors{
   float: left;
 }
@@ -170,13 +182,8 @@ span{
   float: left;
   clear: left;
 }
-.leftSide{
-  float: left;
 
-}
-.rightSide{
-  float: left;
-}
+
 .slider input{
   float: left;
 
@@ -197,14 +204,10 @@ span{
   float: right;
 }
 .topLeft{
-  width: 45%;
+  width: 75%;
 }
-.leftSide{
-  margin-top: 6vw;
-}
-.rightSide{
-  margin-top: 6vw;
-}
+
+
 .sidebar{
   border: 2px solid black;
   position: absolute;

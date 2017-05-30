@@ -138,10 +138,9 @@ class Swatch extends React.Component{
     // }
     if(this.state.userInfo != null && this.state.topSwatches[0] != null){
       let keys = Object.keys(JSON.parse(this.state.topSwatches[0].colors))
-      console.log(keys[0]);
-      console.log(keys);
+
       let value = JSON.parse(this.state.topSwatches[0].colors)[keys[0]];
-      console.log(value);
+
       }
     if(this.state.open){
       sidebar=(
@@ -170,17 +169,15 @@ class Swatch extends React.Component{
     }
     return (
       <div>
-
-      {sidebar}
-
+        {sidebar}
       <div className="topBar">
             {topRight}
         <div className="topLeft">
-        <div className="burger" onClick={()=>this.handleSideBar()}>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+          <div className="burger" onClick={()=>this.handleSideBar()}>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
           <div className="title">
             <h1>
               just
@@ -193,15 +190,10 @@ class Swatch extends React.Component{
               .me
             </h1>
           </div>
-
         </div>
       </div>
-
-
-
         <div className="leftSide">
           <div className="buttons">
-
             <button id="b1" type="button" name="button" onClick={()=>this.setWheel()}>Color Wheel</button>
             <button id="b5" type="button" name="button" onClick={()=>this.averageColor()} >Get Average Color</button>
             <input type="file" id="imageLoader" name="imageLoader" onChange={(event)=>
@@ -211,12 +203,11 @@ class Swatch extends React.Component{
           </div>
           <canvas ref="myCanvas" className="myCanvas"width="400" height="300" onMouseMove={(event)=>this.hoverColor(event)} onClick={(event)=>this.pick(event)}></canvas>
           <img id="my-image" src="" alt=""/>
-
           <div className="sliders">
-          <div className="hoverColor"  style={{
-            backgroundColor: this.toStringHsl(this.state.hoverColor)}}></div>
+            <div className="hoverColor"  style={{
+              backgroundColor: this.toStringHsl(this.state.hoverColor)}}></div>
             <div className="slider">
-            <label>H</label>
+              <label>H</label>
               <input
                 type="range"
                 value={this.state.activeColor[0]}
@@ -243,8 +234,7 @@ class Swatch extends React.Component{
                 onInput={(event)=>{this.sliderChange(2,event.target.value)}}
                 onChange={(event)=>{this.sliderChange(2,event.target.value)}}
                 step={1} />
-              </div>
-
+            </div>
             <div className="slider">
             <label>R</label>
               <input
@@ -275,11 +265,8 @@ class Swatch extends React.Component{
                 step={1} />
               </div>
             </div>
-
-
           </div>
           <div className="rightSide">
-
             <div className="colors">
             <h2>Generated Swatch</h2>
               <div className="cd" id="colorDisplay2" onClick={()=>this.setSelected(-1,'g')} style={{
@@ -331,14 +318,9 @@ class Swatch extends React.Component{
                 </div>
             </div>
             <button style={{float: 'left',clear:'left'}} onClick={()=>this.copySwatch('g')}>copy</button>
-
-
-
           <div className="swatchArea">
 
           {activeSwatch}
-
-
 
             <div className="userSwatch">
             <h2>Active Swatch</h2>
@@ -384,6 +366,7 @@ class Swatch extends React.Component{
     }
 
   }
+
   changePic(value){
     let val = '';
     if(value ==1){
@@ -403,7 +386,7 @@ class Swatch extends React.Component{
   getTopSwatches(){
     let url = BASEURL+'/api/swatches_top';
     let page = this.state.swatchPage;
-    console.log(page);
+
     $.ajax({
         type: 'POST',
         url: url,
@@ -414,9 +397,9 @@ class Swatch extends React.Component{
           page: page
         }),
         success: function(data) {
-          console.log(data);
+
         if(data !== null){
-          console.log(data);
+
           this.setState({
             topSwatches: data
           });}
@@ -440,7 +423,7 @@ class Swatch extends React.Component{
           page: this.state.swatchPage
         }),
         success: function(data) {
-          console.log(data);
+
         if(data !== null){
           this.setState({
             topSwatches: data
@@ -451,6 +434,7 @@ class Swatch extends React.Component{
         }.bind(this)
       });
   }
+  //{/*create account*/}
   signUp(){
     let url = BASEURL+'/api/user/signup';
     $.ajax({
@@ -469,6 +453,7 @@ class Swatch extends React.Component{
       });
 
   }
+//  {/*collects swatches favorited by user*/}
   getFavoriteSwatches(){
     let url = BASEURL+'/api/swatches_favorite';
     $.ajax({
@@ -482,7 +467,7 @@ class Swatch extends React.Component{
           page: this.state.swatchPage
         }),
         success: function(data) {
-          console.log(data);
+
         if(data !== null){
           this.setState({
             topSwatches: data
@@ -493,7 +478,7 @@ class Swatch extends React.Component{
         }.bind(this)
       });
   }
-
+//{/*draw image*/}
   handleImage(e){
     var imageLoader = document.getElementById('imageLoader');
     let canvas = ReactDOM.findDOMNode(this.refs.myCanvas);
@@ -513,7 +498,7 @@ class Swatch extends React.Component{
     }
     reader.readAsDataURL(e.target.files[0]);
   }
-
+//{/*handles pulling of color from canvas*/}
    pick(event) {
      let canvas = ReactDOM.findDOMNode(this.refs.myCanvas);
      let ctx = canvas.getContext('2d');
@@ -546,6 +531,7 @@ class Swatch extends React.Component{
       hoverColor:[hsl[0] * 360, hsl[1]*100, hsl[2]*100]
     });
   }
+  //{/*pulls average color of picture*/}
   averageColor(){
     let img = new Image();
     let canvas = ReactDOM.findDOMNode(this.refs.myCanvas);
@@ -574,7 +560,7 @@ class Swatch extends React.Component{
       rgbColor: rgbColor
     });
   }
-
+//{/*sets last clicked color*/}
   setSelected(value,type){
     if (type === 'g'){
       if (value === -1){
@@ -592,6 +578,7 @@ class Swatch extends React.Component{
       })
     }
   }
+  //{/*copies swatch to user swatch*/}
   copySwatch(type){
     let swatch;
     if(type === 'g'){
@@ -599,7 +586,6 @@ class Swatch extends React.Component{
       this.state.genColor.map((value)=>{
         swatch.push(value);
       });
-      console.log(swatch);
     }
     else if (type === 'a'){
       swatch = this.state.wSwatch;
@@ -608,11 +594,11 @@ class Swatch extends React.Component{
       uSwatch: swatch
     })
   }
+  //{/*sets selected sidebar swatch*/}
   setSwatch(swatch){
 
     let keys = Object.keys(JSON.parse(this.state.topSwatches[0].colors));
     let value = JSON.parse(this.state.topSwatches[0].colors)[keys[0]];
-    console.log(value);
 
     let r = [];
     keys.map((val,i)=>{
@@ -623,6 +609,7 @@ class Swatch extends React.Component{
       wSwatch:r
     });
   }
+//  {/*resets color wheel*/}
   setWheel(){
     let img = new Image();
     let canvas = ReactDOM.findDOMNode(this.refs.myCanvas);
@@ -639,9 +626,9 @@ class Swatch extends React.Component{
       ctx.drawImage(img, (canvas.width / 2) - (img.width / 2), 0, img.width, canvas.height);
     };
   }
-
+//{/*user log in*/}
   logIn(data){
-    console.log(data);
+
     let url = BASEURL+'/api/user/login';
     $.ajax({
         type: 'POST',
@@ -661,7 +648,7 @@ class Swatch extends React.Component{
         }.bind(this)
       });
     }
-
+//{/*sets swatch as a favorite*/}
   setFavorite(data){
     let url = BASEURL+'/api/user/set_favorite';
     $.ajax({
@@ -679,7 +666,7 @@ class Swatch extends React.Component{
         }.bind(this)
       });
     }
-
+//{/*deletes saved user swatch*/}
   deleteSwatch(swatch){
     let url = BASEURL+'/api/delete_swatch';
     $.ajax({
@@ -692,7 +679,6 @@ class Swatch extends React.Component{
         }),
         cache: false,
         success: function(data) {
-          console.log('success');
         }.bind(this),
         error: function(xhr, status, err) {
           console.error(this.props.url, status, err.toString());
@@ -700,7 +686,7 @@ class Swatch extends React.Component{
       });
     }
 
-
+//{/*uploads current swatch*/}
   uploadSwatch(){
     let url = BASEURL+'/api/user/postswatch';
     $.ajax({
@@ -721,7 +707,6 @@ class Swatch extends React.Component{
         }),
         cache: false,
         success: function(data) {
-          console.log('success');
         }.bind(this),
         error: function(xhr, status, err) {
           console.error(this.props.url, status, err.toString());
@@ -731,7 +716,7 @@ class Swatch extends React.Component{
 
 
 
-
+//{/*handles pass and login*/}
   write(value, type){
     if (type === 'pLog'){
       this.setState({
@@ -752,7 +737,7 @@ class Swatch extends React.Component{
       uSwatch: temp
     });
   }
-
+//{/*outputs css of color*/}
   toStringHsl(color){
     return ('hsl('+ Math.floor(color[0])+','+Math.floor(color[1])+'%,'+Math.floor(color[2])+'%)');
   }
@@ -767,7 +752,7 @@ class Swatch extends React.Component{
     let hex = (Math.floor(rgb[0])).toString(16).toUpperCase()+(Math.floor(rgb[1])).toString(16).toUpperCase()+(Math.floor(rgb[2])).toString(16).toUpperCase();
     return ('Hex:#'+hex);
   }
-
+//{/*adds and removes swatches. deprecated*/}
   addRemoveTiles(value){
     let temp = this.state.uSwatch;
     if (value == -1){
@@ -779,7 +764,7 @@ class Swatch extends React.Component{
       uSwatch: temp
     });
   }
-
+//{/*handles sliders*/}
   sliderChange(value,event){
     let temp = this.state.activeColor;
     if (value > 2){
@@ -799,7 +784,7 @@ class Swatch extends React.Component{
     });
     this.generateColors();
   }
-
+//{/*selects analogous and complementary colors*/}
   generateColors(){
     let comp = this.state.activeColor;
     let output = [
