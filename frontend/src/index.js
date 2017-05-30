@@ -72,6 +72,17 @@ class Swatch extends React.Component{
   render() {
     let topRight;
     let activeSwatch;
+    let next;
+    let prev;
+
+
+    if(this.state.swatchPage >0){
+      prev = <button onClick={()=>this.changePage(-1)}>prev</button>;
+    }
+    if(this.state.topSwatches.length == 10){
+      next = <button onClick={()=>this.changePage(1)}>Next</button>
+    }
+
 
     if (this.state.wSwatch != null){
     activeSwatch =  <div className="activeSwatch">
@@ -102,7 +113,7 @@ class Swatch extends React.Component{
         <div className="topRight">
         <input onChange={(event)=>this.write(event.target.value,'uLog')}className="userLogin" type='text'/>
         <input onChange={(event)=>this.write(event.target.value,'pLog')} className="passLogin" type='password'/>
-       <button>Sign Up!</button>
+       <button onClick={()=>this.signUp()}>Sign Up!</button>
          <button onClick={()=>this.logIn({username: this.state.uLog, password: this.state.pLog})}>Log in!</button>
          </div>
 
@@ -110,6 +121,14 @@ class Swatch extends React.Component{
     }
 
     let sidebar;
+    let logInButtons;
+    if (this.state.userInfo != null){
+    logInButtons=
+    <div className='logInButtons'>
+    <button onClick={()=>this.setState({pageType:'user', swatchPage: 0})}>Saved</button>
+      <button onClick={()=>this.setState({pageType:'fav', swatchPage: 0})}>Favorites</button>
+      </div>
+    }
     if(this.state.userInfo != null && this.state.topSwatches[0] != null){
       let keys = Object.keys(JSON.parse(this.state.topSwatches[0].colors))
       console.log(keys[0]);
@@ -118,15 +137,13 @@ class Swatch extends React.Component{
       console.log(value);
       }
     if(this.state.open){
-
       sidebar=(
         <div className="sidebar">
         <button onClick={()=>this.setState({pageType:'top', swatchPage: 0})}>Top</button>
-        <button onClick={()=>this.setState({pageType:'user', swatchPage: 0})}>Yours</button>
-        <button onClick={()=>this.setState({pageType:'fav', swatchPage: 0})}>Fav</button>
+      {logInButtons}
         <button onClick={()=>this.setState({open: false})}>X</button>
         {this.state.topSwatches.map((swatch,j)=>
-          <div key={j}>
+          <div className="sideItem" key={j}>
           {Object.keys(JSON.parse(swatch.colors)).map((val,i)=>
             <div key={i}className="sideColor" style={{backgroundColor: this.toStringHsl(JSON.parse(swatch.colors)[val])}}>
               </div>
@@ -136,8 +153,10 @@ class Swatch extends React.Component{
 
           </div>
       )}
-      <button onClick={()=>this.changePage(1)}>Next</button>
-      <button onClick={()=>this.changePage(-1)}>prev</button>
+      {prev}
+      {next}
+
+
       </div>
     )
     }
@@ -149,28 +168,32 @@ class Swatch extends React.Component{
       <div className="topBar">
             {topRight}
         <div className="topLeft">
-
-          <h1>
-            just
-            <span style={{color:this.toStringHsl(this.state.activeColor)}}>S</span>
-            <span style={{color:this.toStringHsl(this.state.genColor[0])}}>W</span>
-            <span style={{color:this.toStringHsl(this.state.genColor[1])}}>A</span>
-            <span style={{color:this.toStringHsl(this.state.genColor[2])}}>T</span>
-            <span style={{color:this.toStringHsl(this.state.genColor[3])}}>C</span>
-            <span style={{color:this.toStringHsl(this.state.genColor[4])}}>H</span>
-            .me
-          </h1>
-          <button onClick={()=>(this.setState({open: true}))}>Swatches</button>
+        <div className="burger" onClick={()=>this.handleSideBar()}>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
+          <div className="title">
+            <h1>
+              just
+              <span style={{color:this.toStringHsl(this.state.activeColor)}}>S</span>
+              <span style={{color:this.toStringHsl(this.state.genColor[0])}}>W</span>
+              <span style={{color:this.toStringHsl(this.state.genColor[1])}}>A</span>
+              <span style={{color:this.toStringHsl(this.state.genColor[2])}}>T</span>
+              <span style={{color:this.toStringHsl(this.state.genColor[3])}}>C</span>
+              <span style={{color:this.toStringHsl(this.state.genColor[4])}}>H</span>
+              .me
+            </h1>
+          </div>
 
+        </div>
       </div>
 
 
 
         <div className="leftSide">
           <div className="buttons">
-            <div className="hoverColor"  style={{
-              backgroundColor: this.toStringHsl(this.state.hoverColor)}}></div>
+
             <button id="b1" type="button" name="button" onClick={()=>this.setState({img: './wheel.jpeg'})}>Color Wheel</button>
             <button id="b5" type="button" name="button" onClick={()=>this.averageColor()} >Get Average Color</button>
             <input type="file" id="imageLoader" name="imageLoader" onChange={(event)=>
@@ -182,6 +205,8 @@ class Swatch extends React.Component{
           <img id="my-image" src="" alt=""/>
 
           <div className="sliders">
+          <div className="hoverColor"  style={{
+            backgroundColor: this.toStringHsl(this.state.hoverColor)}}></div>
             <div className="slider">
             <label>H</label>
               <input
@@ -325,7 +350,15 @@ class Swatch extends React.Component{
       </div>
     )
   }
-
+  handleSideBar(){
+    let r;
+    if(this.state.open){
+      r = false
+    } else{ r = true;}
+    this.setState({
+      open: r
+    });
+  }
   changePage(val){
     this.setState({
       swatchPage: this.state.swatchPage + val
@@ -407,7 +440,24 @@ class Swatch extends React.Component{
         }.bind(this)
       });
   }
+  signUp(){
+    let url = 'http://localhost:3003/api/user/signup';
+    $.ajax({
+        type: 'POST',
+        url: url,
+       contentType: "application/json",
+        dataType: 'json',
+        data: JSON.stringify({
+          username: this.state.uLog,
+          password: this.state.pLog
+        }),
+        cache: false,
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
 
+  }
   getFavoriteSwatches(){
     let url = 'http://localhost:3003/api/swatches_favorite';
     $.ajax({
