@@ -8,10 +8,16 @@ const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const cors = require('cors');
 
+// const db = pgp({
+//   database: 'justswatchme'
+// });
+const config = require('./config/dbc.js');
 const db = pgp({
-  database: 'justswatchme'
+    host: config.host,
+    database: config.database,
+    user: config.user,
+    password: config.password
 });
-
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());

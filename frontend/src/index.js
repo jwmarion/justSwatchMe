@@ -76,7 +76,7 @@ class Swatch extends React.Component{
     let prev;
 
 
-    if(this.state.swatchPage >0){
+    if(this.state.swatchPage > 0){
       prev = <button onClick={()=>this.changePage(-1)}>prev</button>;
     }
     if(this.state.topSwatches.length == 10){
@@ -87,6 +87,7 @@ class Swatch extends React.Component{
     if (this.state.wSwatch != null){
     activeSwatch =  <div className="activeSwatch">
   <div>
+  <h2>Loaded Swatch</h2>
       {this.state.uSwatch.map((val,i)=>
          <div className="cd" onClick={()=>this.setSelected(i,'a')} style={{
            backgroundColor: this.toStringHsl(this.state.wSwatch[i])}} key={i}>
@@ -122,7 +123,10 @@ class Swatch extends React.Component{
 
     let sidebar;
     let logInButtons;
+    let uploadButton;
+
     if (this.state.userInfo != null){
+    uploadButton=<button onClick={()=>this.uploadSwatch()}>upload</button>;
     logInButtons=
     <div className='logInButtons'>
     <button onClick={()=>this.setState({pageType:'user', swatchPage: 0})}>Saved</button>
@@ -141,7 +145,7 @@ class Swatch extends React.Component{
         <div className="sidebar">
         <button onClick={()=>this.setState({pageType:'top', swatchPage: 0})}>Top</button>
       {logInButtons}
-        <button onClick={()=>this.setState({open: false})}>X</button>
+
         {this.state.topSwatches.map((swatch,j)=>
           <div className="sideItem" key={j}>
           {Object.keys(JSON.parse(swatch.colors)).map((val,i)=>
@@ -271,7 +275,9 @@ class Swatch extends React.Component{
 
           </div>
           <div className="rightSide">
+
             <div className="colors">
+            <h2>Generated Swatch</h2>
               <div className="cd" id="colorDisplay2" onClick={()=>this.setSelected(-1,'g')} style={{
                 backgroundColor: this.toStringHsl(this.state.activeColor)}}>
                 Active Color <br/>
@@ -331,6 +337,7 @@ class Swatch extends React.Component{
 
 
             <div className="userSwatch">
+            <h2>Active Swatch</h2>
               {this.state.uSwatch.map((val,i)=>
                  <div className="cd" onClick={()=>this.select(i)} style={{
                    backgroundColor: this.toStringHsl(this.state.uSwatch[i])}} key={i}>
@@ -342,7 +349,7 @@ class Swatch extends React.Component{
 
 
             <div className="slideMgmt">
-              <button onClick={()=>this.uploadSwatch()}>upload</button>
+              {uploadButton}
             </div>
             </div>
 
@@ -642,7 +649,7 @@ class Swatch extends React.Component{
         url: url,
        contentType: "application/json",
         dataType: 'json',
-        data: JSON.stringify({//userid/swatchid
+        data: JSON.stringify({//userid/swatchi
           userid: data[0],
           swatchid: data[1]
         }),
