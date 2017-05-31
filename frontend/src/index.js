@@ -87,7 +87,7 @@ class Swatch extends React.Component{
     if (this.state.wSwatch != null){
     activeSwatch =  <div className="activeSwatch">
   <div>
-  <h2>Loaded Swatch</h2>
+  <h2>  Loaded Swatch</h2>
       {this.state.uSwatch.map((val,i)=>
          <div className="cd" onClick={()=>this.setSelected(i,'a')} style={{
            backgroundColor: this.toStringHsl(this.state.wSwatch[i])}} key={i}>
@@ -269,7 +269,7 @@ class Swatch extends React.Component{
           </div>
           <div className="rightSide">
             <div className="colors">
-            <h2>Generated Swatch</h2>
+            <h2>  Generated Swatch</h2>
               <div className="cd" id="colorDisplay2" onClick={()=>this.setSelected(-1,'g')} style={{
                 backgroundColor: this.toStringHsl(this.state.activeColor)}}>
                 Active Color <br/>
@@ -324,7 +324,7 @@ class Swatch extends React.Component{
           {activeSwatch}
 
             <div className="userSwatch">
-            <h2>Active Swatch</h2>
+            <h2>  Active Swatch</h2>
               {this.state.uSwatch.map((val,i)=>
                  <div className="cd" onClick={()=>this.select(i)} style={{
                    backgroundColor: this.toStringHsl(this.state.uSwatch[i])}} key={i}>

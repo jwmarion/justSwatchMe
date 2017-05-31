@@ -29,6 +29,9 @@ h1{
   background-size:contain;
   background-size: contain;
 }
+h2{
+  padding-left: .5em;
+}
 .leftSide{
   background-color: #595855;
   border-radius: 25px;
@@ -55,7 +58,7 @@ h1{
   background-color: #595855;
   font-weight: bold;
   font-size: .75em;
-  border: 1px solid black;
+
   border-radius: 25px;
   color: black;
   margin: 0 5px;
@@ -69,7 +72,9 @@ h1{
 .colors{
   padding-top: 30px;
 }
-
+.buttons button:first-of-type{
+  width: 6vw;
+}
 
 .sliders{
   margin-left: 2vw;
