@@ -1,4 +1,4 @@
-# JustSwatchMe
+wxit# JustSwatchMe
 ---
 ## [URL](http://www.justSwatch.me)
 
@@ -24,14 +24,14 @@ You can pick colors from either a color wheel or a photo you upload to the dom. 
 
 ## Site Walkthrough
 <p align='center'>
-    <img src='public/readmepics/fullpage.png'></img>
+    <img src='http://justswatch.me/readmepics/fullpage.png'></img>
 </p>
 
 ### How to use
 Users can create an account if they would like to save their swatches, but most functionality is available without an account. Otherwise a user can start picking colors. By default, a color wheel is pulled up. The user may click anywhere on the wheel to select that color. If you would like to tweak that color, there are HSL and RGB sliders.
 Similarly, you can you can click the 'choose file' button to upload your photo to select colors from.
 <p align='center'>
-    <img src='public/readmepics/picture.png'></img>
+    <img src='http://justswatch.me/readmepics/picture.png'></img>
 </p>
 
 When you have a color you like, clicking on it will select that color. By selecting on a spot on the active user swatch, you can copy that color over to your personal swatch. You can also click the 'Get Average Color' button to pull the average color of the photo.
@@ -41,7 +41,7 @@ If you like your swatch and you are logged in, an upload button will appear unde
 By clicking on the hamburger menu, you can see your swatch along with everyone elses. If you see a swatch you like, just click on the 'set swatch' button to retrieve it.
 
 <p align='center'>
-    <img src='public/readmepics/sidebar.png'></img>
+    <img src='http://justswatch.me/readmepics/sidebar.png'></img>
 </p>
 
 
