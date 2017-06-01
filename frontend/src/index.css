@@ -245,18 +245,22 @@ span{
   border: 1px solid black;
 }
 
-@media only screen and (max-width: 1024napx){
+@media only screen and (max-width: 1025px){
 .leftSide{
   width: 100%;
+  margin: none;
+  padding: none;
 }
 .rightSide{
   width: 100%;
+  margin: none;
+  padding: none;
 }
 .buttons button:first-of-type{
   width: 10vw;
 }
 }
-@media only screen and (max-width: 768napx){
+@media only screen and (max-width: 768px){
 .topBar{
   height: 6em;
 }
