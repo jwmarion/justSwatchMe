@@ -73,7 +73,7 @@ h2{
   padding-top: 30px;
 }
 .buttons button:first-of-type{
-  width: 6vw;
+  width: 5vw;
 }
 
 .sliders{
@@ -245,4 +245,10 @@ span{
   width: 30px;
   height: 30px;
   border: 1px solid black;
+}
+
+@media only screen and (max-width: 767px){
+.leftSide{
+  width: 100%;
+}
 }

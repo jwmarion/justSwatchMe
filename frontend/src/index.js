@@ -288,7 +288,7 @@ class Swatch extends React.Component{
 
               <div className="cd" id="colorDisplay4" onClick={()=>this.setSelected(1,'g')} style={{
                 backgroundColor: this.toStringHsl(this.state.genColor[1])}}>
-                split complementary 1<br/>
+                Split Complementary 1<br/>
                 {this.toStringRgb(this.state.genColor[1])}<br/>
                 {this.toStringHsl(this.state.genColor[1])}<br/>
                 {this.toStringHex(this.state.genColor[1])}
@@ -296,7 +296,7 @@ class Swatch extends React.Component{
 
               <div className="cd" id="colorDisplay5" onClick={()=>this.setSelected(2,'g')} style={{
                 backgroundColor: this.toStringHsl(this.state.genColor[2])}}>
-                split complementary 2<br/>
+                Split Complementary 2<br/>
                 {this.toStringRgb(this.state.genColor[2])}<br/>
                 {this.toStringHsl(this.state.genColor[2])}<br/>
                 {this.toStringHex(this.state.genColor[2])}
