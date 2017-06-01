@@ -249,6 +249,9 @@ span{
 .leftSide{
   width: 100%;
 }
+.rightSide{
+  width: 100%;
+}
 .buttons button:first-of-type{
   width: 10vw;
 }
