@@ -252,12 +252,14 @@ span{
   width: 100%;
   margin: none;
   padding: none;
+  padding-bottom: 5vw;
   left: 0;
 }
 .rightSide{
   width: 100%;
   margin: none;
   padding: none;
+  padding-bottom: 5vw;
   left: 0;
 }
 .buttons button:first-of-type{
