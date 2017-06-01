@@ -72,9 +72,7 @@ h2{
 .colors{
   padding-top: 30px;
 }
-.buttons button:first-of-type{
-  width: 5vw;
-}
+
 
 .sliders{
   margin-left: 2vw;
@@ -247,8 +245,17 @@ span{
   border: 1px solid black;
 }
 
-@media only screen and (max-width: 767px){
+@media only screen and (max-width: 1024napx){
 .leftSide{
   width: 100%;
 }
+.buttons button:first-of-type{
+  width: 10vw;
+}
+}
+@media only screen and (max-width: 768napx){
+.topBar{
+  height: 6em;
+}
+
 }
