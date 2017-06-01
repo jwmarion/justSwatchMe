@@ -72,7 +72,9 @@ h2{
 .colors{
   padding-top: 30px;
 }
-
+.buttons button:first-of-type{
+  width: 5vw;
+}
 
 .sliders{
   margin-left: 2vw;
@@ -250,11 +252,13 @@ span{
   width: 100%;
   margin: none;
   padding: none;
+  left: 0;
 }
 .rightSide{
   width: 100%;
   margin: none;
   padding: none;
+  left: 0;
 }
 .buttons button:first-of-type{
   width: 10vw;
