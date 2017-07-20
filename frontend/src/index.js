@@ -111,9 +111,10 @@ class Swatch extends React.Component{
     }else{
       topRight = (
         <div className="topRight">
-          <input onChange={(event)=>this.write(event.target.value,'pLog')} className="passLogin" type='password'/>
-        <input onChange={(event)=>this.write(event.target.value,'uLog')}className="userLogin" type='text'/>
-
+          <div className="login">
+            <input onChange={(event)=>this.write(event.target.value,'uLog')} className="userLogin" style={{float: 'left'}} placeholder="Username" type='text'/>
+            <input onChange={(event)=>this.write(event.target.value,'pLog')} className="passLogin" style={{float: 'left'}} placeholder="Password" type='password'/>
+          </div>
        <button onClick={()=>this.signUp()}>Sign Up!</button>
          <button onClick={()=>this.logIn({username: this.state.uLog, password: this.state.pLog})}>Log in!</button>
          </div>
