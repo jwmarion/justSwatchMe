@@ -15,7 +15,7 @@ class Swatch extends React.Component{
       colorType: 'hsl',
       pageType: 'top',
       topSwatches:[[[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100]],[[37, 100, 50],[2, 92, 57],[55,100,50],[123,100,50],[215,100,50],[275,100,50]]],
-      selected:[[0,0,100]],
+      selected:[0,0,100],
       uSwatch: [[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100]],
       wSwatch: null,
       userSwatch: [[[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100],[0,0,100]],[[37, 100, 50],[2, 92, 57],[55,100,50],[123,100,50],[215,100,50],[275,100,50]]],
@@ -57,7 +57,6 @@ class Swatch extends React.Component{
       let canvas = ReactDOM.findDOMNode(this.refs.myCanvas);
       let ctx = canvas.getContext('2d');
       this.getTopSwatches();
-      img.src = this.state.currentPic;
       ctx.drawImage(img, 0, 0);
       img.onload = function(){
         let ratio = this.height / this.width;
