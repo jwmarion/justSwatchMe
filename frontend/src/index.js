@@ -57,6 +57,7 @@ class Swatch extends React.Component{
       let canvas = ReactDOM.findDOMNode(this.refs.myCanvas);
       let ctx = canvas.getContext('2d');
       this.getTopSwatches();
+      img.src = this.state.currentPic;
       ctx.drawImage(img, 0, 0);
       img.onload = function(){
         let ratio = this.height / this.width;
