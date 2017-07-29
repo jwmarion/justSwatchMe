@@ -131,6 +131,21 @@ class Swatch extends React.Component{
     let signUpBox;
     let logInButtons;
     let uploadButton;
+    let signUpButton;
+    let passMatch;
+
+/*
+npLog: null,
+nuLog: null,
+cpLog: null
+*/
+    if (this.state.npLog === this.state.cpLog && this.state.cpLog !== null && this.state.npLog !== null){
+      signUpButton = <button onClick={()=>this.signUp()} style={{backgroundColor: '#828282'}}>Sign Up</button>
+    }
+    else{
+      signUpButton = <button disabled>Sign Up</button>
+      passMatch = <p> Passwords do not match!</p>
+    }
 
 
     if (this.state.signingUp === true){
@@ -142,20 +157,27 @@ class Swatch extends React.Component{
 
         <div style={{float: 'left', width: '100%'}}>
           <h2 style={{float: 'left'}}>Name:</h2>
-          <input onChange={(event)=>this.write(event.target.value,'nuLog')} className="userCreate" style={{float: 'left'}} placeholder="Username" type='text'/>
+          <input onChange={(event)=>this.write(event.target.value,'nuLog')} className="userCreate" style={{float: 'left', clear: 'left', marginLeft: '20px'}} placeholder="Username" type='text'/>
         </div>
 
         <div style={{float: 'left', clear: 'left', width: '100%'}}>
           <h2 style={{float: 'left'}}>Password:</h2>
-          <input onChange={(event)=>this.write(event.target.value,'npLog')} className="passCreate" style={{float: 'left'}} placeholder="Password" type='password'/>
+          <input onChange={(event)=>this.write(event.target.value,'npLog')} className="passCreate" style={{float: 'left', clear: 'left', marginLeft: '20px'}} placeholder="Password" type='password'/>
         </div>
 
         <div style={{float: 'left', clear: 'left', width: '100%'}}>
           <h2 style={{float: 'left'}}>Confirm Password:</h2>
-          <input onChange={(event)=>this.write(event.target.value,'cpLog')} className="confPassCreate" style={{float: 'left'}} placeholder="Confirm Password" type='password'/>
+          <input onChange={(event)=>this.write(event.target.value,'cpLog')} className="confPassCreate" style={{float: 'left', clear: 'left', marginLeft: '20px'}} placeholder="Confirm Password" type='password'/>
         </div>
+
+        <div>
+          {signUpButton}
+        </div>
+
+
+
         <div onClick={()=>this.setState({signingUp:false})}>
-          <p>[x] close</p>
+          <p style={{marginLeft: '20px', position: 'absolute', top: '6px', right: '6px', cursor: 'pointer'}}>[x]</p>
         </div>
 
     </div>
@@ -765,6 +787,22 @@ class Swatch extends React.Component{
         uLog: value
       });
     }
+    else if (type === 'nuLog'){
+      this.setState({
+        nuLog: value
+      });
+    }
+    else if (type === 'npLog'){
+      this.setState({
+        npLog: value
+      });
+    }
+    else if (type === 'cpLog'){
+      this.setState({
+        cpLog: value
+      });
+    }
+
   }
 
   select(value){
