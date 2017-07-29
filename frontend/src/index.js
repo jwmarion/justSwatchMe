@@ -10,6 +10,7 @@ class Swatch extends React.Component{
     super();
     this.state = {
       open: false,
+      signingUp: false,
       swatchPage:0,
       userInfo: null,
       colorType: 'hsl',
@@ -26,7 +27,10 @@ class Swatch extends React.Component{
       genColor: [[37, 100, 50],[55,100,50],[123,100,50],[215,100,50],[275,100,50]],
       value: 10,
       pLog: null,
-      uLog: null
+      uLog: null,
+      npLog: null,
+      nuLog: null,
+      cpLog: null
 
     };
     // this.onSetOpen = this.onSetOpen.bind(this);
@@ -124,9 +128,27 @@ class Swatch extends React.Component{
     }
 
     let sidebar;
+    let signUpBox;
     let logInButtons;
     let uploadButton;
-    // let deleteButton;
+
+
+    if (this.state.signingUp === true){
+    signUpBox =
+    <div className='signUpBox'>
+        <div>Enter a name and password</div>
+        <div>Name
+          <input onChange={(event)=>this.write(event.target.value,'nuLog')} className="userCreate" style={{float: 'left'}} placeholder="Username" type='text'/>
+          </div>
+        <div>Password:
+          <input onChange={(event)=>this.write(event.target.value,'npLog')} className="passCreate" style={{float: 'left'}} placeholder="Password" type='password'/>
+          </div>
+        <div>Confirm Password:
+          <input onChange={(event)=>this.write(event.target.value,'cpLog')} className="confPassCreate" style={{float: 'left'}} placeholder="Confirm Password" type='password'/>
+          </div>
+    </div>
+    }
+
     if (this.state.userInfo != null){
     uploadButton=<button onClick={()=>this.uploadSwatch()}>upload</button>;
     logInButtons=

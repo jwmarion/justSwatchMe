@@ -235,7 +235,14 @@ span{
   width: 75%;
 }
 
-
+.signUpBox{
+  position: absolute;
+  z-index: 2;
+  left: 100;
+  top: 100;
+  width: 400;
+  height: 600;
+}
 .sidebar{
   border: 2px solid black;
   position: absolute;
