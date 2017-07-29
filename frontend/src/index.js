@@ -120,7 +120,7 @@ class Swatch extends React.Component{
             <input onChange={(event)=>this.write(event.target.value,'uLog')} className="userLogin" style={{float: 'left'}} placeholder="Username" type='text'/>
             <input onChange={(event)=>this.write(event.target.value,'pLog')} className="passLogin" style={{float: 'left'}} placeholder="Password" type='password'/>
           </div>
-       <button onClick={()=>this.signUp()}>Sign Up!</button>
+       <button onClick={()=>this.setState({signingUp:true})}>Create an account!</button>
          <button onClick={()=>this.logIn({username: this.state.uLog, password: this.state.pLog})}>Log in!</button>
          </div>
 
@@ -136,16 +136,28 @@ class Swatch extends React.Component{
     if (this.state.signingUp === true){
     signUpBox =
     <div className='signUpBox'>
-        <div>Enter a name and password</div>
-        <div>Name
+        <div>
+        <h1>Enter a name and password</h1>
+        </div>
+
+        <div style={{float: 'left', width: '100%'}}>
+          <h2 style={{float: 'left'}}>Name:</h2>
           <input onChange={(event)=>this.write(event.target.value,'nuLog')} className="userCreate" style={{float: 'left'}} placeholder="Username" type='text'/>
-          </div>
-        <div>Password:
+        </div>
+
+        <div style={{float: 'left', clear: 'left', width: '100%'}}>
+          <h2 style={{float: 'left'}}>Password:</h2>
           <input onChange={(event)=>this.write(event.target.value,'npLog')} className="passCreate" style={{float: 'left'}} placeholder="Password" type='password'/>
-          </div>
-        <div>Confirm Password:
+        </div>
+
+        <div style={{float: 'left', clear: 'left', width: '100%'}}>
+          <h2 style={{float: 'left'}}>Confirm Password:</h2>
           <input onChange={(event)=>this.write(event.target.value,'cpLog')} className="confPassCreate" style={{float: 'left'}} placeholder="Confirm Password" type='password'/>
-          </div>
+        </div>
+        <div onClick={()=>this.setState({signingUp:false})}>
+          <p>[x] close</p>
+        </div>
+
     </div>
     }
 
@@ -193,6 +205,7 @@ class Swatch extends React.Component{
     }
     return (
       <div>
+      {signUpBox}
         {sidebar}
       <div className="topBar">
             {topRight}
