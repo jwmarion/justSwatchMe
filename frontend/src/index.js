@@ -141,10 +141,11 @@ cpLog: null
 */
     if (this.state.npLog === this.state.cpLog && this.state.cpLog !== null && this.state.npLog !== null){
       signUpButton = <button onClick={()=>this.signUp()} style={{backgroundColor: '#828282'}}>Sign Up</button>
+      passMatch = <p style={{color:'green'}}>Passwords match!</p>
     }
     else{
       signUpButton = <button disabled>Sign Up</button>
-      passMatch = <p> Passwords do not match!</p>
+      passMatch = <p style={{color:'red'}}> Passwords do not match!</p>
     }
 
 
@@ -171,6 +172,7 @@ cpLog: null
         </div>
 
         <div>
+          {passMatch}
           {signUpButton}
         </div>
 
