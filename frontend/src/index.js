@@ -140,7 +140,7 @@ nuLog: null,
 cpLog: null
 */
     if (this.state.npLog === this.state.cpLog && this.state.cpLog !== null && this.state.npLog !== null){
-      signUpButton = <button onClick={()=>this.signUp()} style={{backgroundColor: '#828282'}}>Sign Up</button>
+      signUpButton = <button onClick={()=>this.checkUserName()} style={{backgroundColor: '#828282'}}>Sign Up</button>
       passMatch = <p style={{color:'green'}}>Passwords match!</p>
     }
     else{
@@ -514,6 +514,28 @@ cpLog: null
       });
 
   }
+
+  checkUserName(){
+    let url = BASEURL+'/api/user/check_user';
+    $.ajax({
+        type: 'POST',
+        url: url,
+        cache: false,
+        dataType: 'json',
+        contentType: "application/json",
+        data: JSON.stringify({
+          username: this.state.nuLog,
+        }),
+        success: function(data) {
+        if(data === null){
+          this.signUp();}
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+  }
+
 //  {/*collects swatches favorited by user*/}
   getFavoriteSwatches(){
     let url = BASEURL+'/api/swatches_favorite';

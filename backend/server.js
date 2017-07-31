@@ -90,6 +90,12 @@ app.post('/api/user/set_favorite', (req, resp, next) => {
   .catch(next);
 });
 
+app.post('/api/user/check_user', (req, resp, next) => {
+  db.any('select * from "user" where username = $1',req.body.username)
+    .then(data => resp.json(data))
+    .catch(next);
+});
+
 app.post('/api/user/signup', (req, resp, next) => {
   let data = req.body;
   console.log(req.body);
