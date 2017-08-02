@@ -8,16 +8,16 @@ const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const cors = require('cors');
 
-const db = pgp({
-  database: 'justswatchme'
-});
-// const config = require('./dbc.js');
 // const db = pgp({
-//     host: config.host,
-//     database: config.database,
-//     user: config.user,
-//     password: config.password
+//   database: 'justswatchme'
 // });
+const config = require('./dbc.js');
+const db = pgp({
+    host: config.host,
+    database: config.database,
+    user: config.user,
+    password: config.password
+});
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -98,7 +98,6 @@ app.post('/api/user/check_user', (req, resp, next) => {
 
 app.post('/api/user/signup', (req, resp, next) => {
   let data = req.body;
-  console.log(req.body);
   bcrypt.hash(data.password, 10)
     .then((encryptedPassword) =>
       db.one(`

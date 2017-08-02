@@ -496,18 +496,48 @@ cpLog: null
       });
   }
   //{/*create account*/}
+
+  // signUpProcess(){
+  //   console.log('test');
+  //   this.checkUserName().then(
+  //     this.signup().then(
+  //       this.logIn({
+  //         username: this.state.nuLog,
+  //         password: this.state.npLog
+  //       })));
+  //     console.log('test2');
+  //   //else give error
+  //
+  //
+  //
+  //     // username: data.username,
+  //     // password: data.password,
+  //   }
+
+
+
   signUp(){
+    console.log('signup reached!');
     let url = BASEURL+'/api/user/signup';
     $.ajax({
         type: 'POST',
         url: url,
-       contentType: "application/json",
+        cache: false,
+        contentType: "application/json",
         dataType: 'json',
         data: JSON.stringify({
-          username: this.state.uLog,
-          password: this.state.pLog
+          username: this.state.nuLog,
+          password: this.state.npLog
         }),
-        cache: false,
+        success: function(data) {
+          this.logIn({
+            username: this.state.nuLog,
+            password: this.state.npLog
+          });
+          this.setState({
+            signingUp: false
+          });
+        }.bind(this),
         error: function(xhr, status, err) {
           console.error(this.props.url, status, err.toString());
         }.bind(this)
@@ -527,8 +557,10 @@ cpLog: null
           username: this.state.nuLog,
         }),
         success: function(data) {
-        if(data === null){
-          this.signUp();}
+          console.log(data)
+          if(data.length === 0){
+            this.signUp();
+          }
         }.bind(this),
         error: function(xhr, status, err) {
           console.error(this.props.url, status, err.toString());

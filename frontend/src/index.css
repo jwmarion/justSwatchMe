@@ -242,8 +242,8 @@ span{
   z-index: 2;
   left: 40%;
   top: 35%;
-  width: 15%;
-  height: 20%;
+  width: 400px;
+  height: 250px;
 }
 .sidebar{
   border: 2px solid black;
